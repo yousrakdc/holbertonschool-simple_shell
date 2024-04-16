@@ -1,5 +1,6 @@
 #include "shell.h"
 
+
 /**
  * builtins_check - Checks if a command is built-in
  * @args: array of arguments
@@ -7,7 +8,7 @@
  * otherwise NULL
  */
 
-void(*builtins_check(char **args))
+void(*builtins_check(char **args))(char **args)
 {
 	int i, j;
 
@@ -19,14 +20,19 @@ void(*builtins_check(char **args))
 		{NULL, NULL}
 	};
 
-	for (i = 0; T[i].name != NULL; i++)
+	for (i = 0; T[i].name; i++)
 	{
 		j = 0;
-		while (T[i].name[j] != '\0' && T[i].name[j] == args[0][j]) 
-			j++;
-
-		if (T[i].name[j] == '\0')
-			return (T[i].func);
+		if (T[i].name[j] == args[0][j])
+		{
+			for (j = 0; args[0][j]; j++)
+			{
+				if (T[i].name[j] != args[0][j])
+					break;
+			}
+			if (!args[0][j])
+				return (T[i].func);
+		}
 	}
-	return (NULL);
+	return (0);
 }
