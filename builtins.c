@@ -81,7 +81,7 @@ void set_custom_env(char **args)
 
 	if (!args[1] || !args[2])
 	{
-		perror("setenv"); /*print an error message if not enought args*/
+		fprintf(stderr, "Usage: set_custom_env VARIABLE VALUE\n"); /*print an error message if not enought args*/
 		return;
 	}
 
@@ -91,14 +91,14 @@ void set_custom_env(char **args)
 			/*Update the value of the environment variable*/
 		{
 			if (setenv(args[1], args[2], 1) != 0)
-				perror("setenv"); /*Print an error message if setenv fails*/
+				fprintf(stderr, "Error updating environment variable %s\n", args[1]); /*Print an error message if setenv fails*/
 			return;
 		}
 
 	}
 
 	if (setenv(args[1], args[2], 1) != 0) /* Add environment variable if it doesn't exist*/
-		perror("_setenv"); /* pritn error message if failure*/
+		fprintf(stderr, "Error setting environment variable %s\n", args[1]); /* pritn error message if failure*/
 }
 
 /**
@@ -110,13 +110,14 @@ int unset_custom_env(char **args)
 {
 	if (!args[1])
 	{
-		perror("unsetenv"); /* Print an error message if insufficient arguments provided*/
-		return;
+		fprintf(stderr, "Usage: unset_custom_env VARIABLE\n"); /* Print an error message if insufficient arguments provided*/
+		return (-1);
 	}
 
 	/*Use unsetenv to remove the environment variable*/
 
 	if (unsetenv(args[1] != 0))
-		perror("_unsetenv"); /* Print an error message if unsetenv fails*/
+		fprintf(stderr, "Error unsetting environment variable %s\n", args[1]); /* Print an error message if unsetenv fails*/
+	return (-1);
 
 }
