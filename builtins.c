@@ -1,4 +1,10 @@
 #include "shell.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int custom_atoi(char *s);
+extern char **environ;
 
 /**
  * shell_exit - Exits the shell with or without a return status n
@@ -12,7 +18,7 @@ void shell_exit(char **args)
 
 	if (args[1] != NULL)
 	{
-		status = _atoi(args[1]); /* Convert the argument to an integer*/
+		status = custom_atoi(args[1]); /* Convert the argument to an integer*/
 		if (status < 0)
 			status = 2; /* Default exit status if the argument is negative */
 	}
@@ -25,11 +31,11 @@ void shell_exit(char **args)
 }
 
 /**
- * _atoi - Converts a string into an integer.
+ * atoi - Converts a string into an integer.
  * @s: Pointer to a string.
  * Return: The integer.
  */
-int _atoi(char *s) 
+int custom_atoi(char *s) 
 {
 	int integer = 0;
 	int sign = 1;
@@ -60,9 +66,9 @@ int _atoi(char *s)
 void env(char **args __attribute__ ((unused)))
 {       
 	int i;
-	char **environ;
+	char **environ = NULL;
 
-	for (i = 0; environ[i]; i++);
+	for (i = 0; environ[i]; i++)
 	{
 		_puts(environ[i]);
 		_puts("\n");
@@ -76,8 +82,8 @@ void env(char **args __attribute__ ((unused)))
 
 void set_custom_env(char **args)
 {
-	int i, j, k;
-	char **environ;
+	int i;
+	char **environ = NULL;
 
 	if (!args[1] || !args[2])
 	{
@@ -106,18 +112,15 @@ void set_custom_env(char **args)
  * @args: array of entered words
  */
 
-int unset_custom_env(char **args)
+void unset_custom_env(char **args)
 {
 	if (!args[1])
 	{
 		fprintf(stderr, "Usage: unset_custom_env VARIABLE\n"); /* Print an error message if insufficient arguments provided*/
-		return (-1);
 	}
 
 	/*Use unsetenv to remove the environment variable*/
 
-	if (unsetenv(args[1] != 0))
+	if (unsetenv(args[1]) != 0)
 		fprintf(stderr, "Error unsetting environment variable %s\n", args[1]); /* Print an error message if unsetenv fails*/
-	return (-1);
-
 }
