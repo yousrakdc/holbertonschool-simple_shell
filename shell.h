@@ -23,13 +23,14 @@ typedef struct mybuild {
     build_func func;
 } mybuild;
 
-void(*builtins_check(char **args));
+void(*builtins_check(char **args))(char **args);
 
 /* prototypes for builtins*/
 
 void shell_exit(char **args);
+int custom_atoi(char *s); 
 void env(char **args __attribute__ ((unused)));
 void set_custom_env(char **args);
-int unset_custom_env(char **args);
+void unset_custom_env(char **args);
 
 #endif
