@@ -14,4 +14,22 @@ int _strlen(char *s);
 char *_strdup(char *str);
 char *concat_all(char *name, char *sep, char *value);
 
+/* prototype for check_builtins*/
+
+typedef void (*build_func)(char **args);
+
+typedef struct mybuild {
+    char *name;
+    build_func func;
+} mybuild;
+
+void(*builtins_check(char **args));
+
+/* prototypes for builtins*/
+
+void shell_exit(char **args);
+void env(char **args __attribute__ ((unused)));
+void set_custom_env(char **args);
+int unset_custom_env(char **args);
+
 #endif
