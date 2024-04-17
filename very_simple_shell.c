@@ -8,15 +8,11 @@
 int main(void)
 {
 	char *file;
-	char *command;
 
 	while (1)
 	{
 		file = get_filename();
 		execute_it(file);
-		command = get_command();
-		execute_command(command);
-		free(command);
 	}
 }
 
