@@ -41,7 +41,6 @@ char *get_filename()
 		free(filename);
 		exit(1);
 	}
-
 	filename[input - 1] = '\0';
 
 	return (filename);
@@ -59,10 +58,20 @@ int execute_it(char *filename)
 	pid_t pid;
 	char *argv[2];
 	char *envp[1];
+	int argc = 0;
+	char *token;
 
 	argv[0] = filename;
 	argv[1] = NULL;
 	envp[0] = NULL;
+
+	token = strtok(filename, " ");
+	while (token != NULL)
+	{
+		argv[argc++] = token;
+		token = strtok(NULL, " ");
+	}
+
 	pid = fork();
 
 	if (pid == 0)
