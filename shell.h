@@ -18,6 +18,10 @@ int main(void);
 char *get_filename();
 int execute_it(char *);
 
+/* prototype for commands*/
+
+char *get_command();
+void execute_command(char *command);
 
 /* prototype for check_builtins*/
 
