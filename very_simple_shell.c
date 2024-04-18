@@ -1,5 +1,7 @@
 #include "shell.h"
 
+#define MAX_ARGS 20
+
 /**
  * main - UNIX command line interpreter
  * Return: 0
@@ -7,41 +9,46 @@
 
 int main(void)
 {
-	char *file;
+        char *file;
 
-	while (1)
-	{
-		file = get_filename();
-		execute_it(file);
-	}
+        while (1)
+        {
+                file = get_filename();
+                if (!file)
+                        break;
+                /* builtins_check(file); */
+                execute_it(file);
+                free(file);
+        }
+        return (0);
 }
 
 /**
- * get_filename - read the filenama given by the user
+ * get_filename - read the filename given by the user
  * Return: the name of the file to execute
  */
 
 char *get_filename()
 {
-	char *filename = NULL;
-	size_t lenght;
-	int input;
+        char *filename = NULL;
+        size_t length;
+        int input;
 
 
-	printf("€ ");
-	input = getline(&filename, &lenght, stdin);
+        printf("~B ");
+        input = getline(&filename, &length, stdin);
 
-	if (input == -1)
-	{
-		printf("ctrl D \n");
-		free(filename);
-		exit(1);
-	}
-	filename[input - 1] = '\0';
+        if (input == -1)
+        {
+                printf("ctrl D \n");
+                free(filename);
+                exit(EXIT_FAILURE); /* Better error handling */
+        }
 
-	return (filename);
+        return (filename);
 
 }
+
 
 /**
  * execute_it - execute a command in a child process
@@ -51,45 +58,42 @@ char *get_filename()
 
 int execute_it(char *filename)
 {
-	pid_t pid;
-	char *argv[2];
-	char *envp[1];
-	int argc = 0;
-	char *token;
+        pid_t pid;
+        char *argv[MAX_ARGS + 1]; /* One extra for NULL */
+        int argc = 0;
+        char *token;
 
-	argv[0] = filename;
-	argv[1] = NULL;
-	envp[0] = NULL;
+        token = strtok(filename, " ");
 
-	token = strtok(filename, " ");
-	while (token != NULL)
-	{
-		argv[argc++] = token;
-		token = strtok(NULL, " ");
-	}
+        while (token != NULL && argc < MAX_ARGS)
+        {
+                argv[argc++] = token;
+                token = strtok(NULL, " ");
+        }
 
-	pid = fork();
+        argv[argc] = NULL;
 
-	if (pid == 0)
-	{
-		printf("execute command : %s \n", filename);
-		if (execve(filename, argv, envp) == -1)
-		{
-			perror("Echec");
-			exit(1);
-		}
-	}
-	else if (pid == -1)
-	{
+        pid = fork();
 
-		printf("Echec : fork failure");
-	}
-	else
-	{
-		printf("i'm waiting \n");
-		waitpid(pid, NULL, 0);
-	}
+        if (pid == 0)
+        {
+                printf("execute command : %s \n", filename);
+                if (execv(argv[0], argv) == -1)
+                {
+                        perror("Error");
+                        exit(EXIT_FAILURE);
+                }
+        }
+        else if (pid == -1)
+        {
+                printf("Error : fork failure");
+                exit(EXIT_FAILURE);
+        }
+        else
+        {
+                printf("I'm waiting \n");
+                waitpid(pid, NULL, 0);
+        }
 
-	return (0);
+        return (0);
 }
-
