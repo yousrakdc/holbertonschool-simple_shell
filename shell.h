@@ -19,12 +19,13 @@ int main(void);
 char *get_filename();
 int execute_it(char *);
 
-/* prototype for commands*/
+/* prototype for print_env*/
 
-char *get_command();
-void execute_command(char *command);
+char *print_env(const char *name);
 
 /* prototype for check_builtins*/
+
+typedef void (*build_func)(char **args);
 
 /**
  * struct mybuild - pointer to function
@@ -37,8 +38,6 @@ typedef struct mybuild
 	char *name;
 	build_func func;
 } mybuild;
-typedef void (*build_func)(char **args);
-void(*builtins_check(char **args))(char **args);
 
 /* prototypes for builtins*/
 
