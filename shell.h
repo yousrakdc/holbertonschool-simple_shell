@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #include <string.h>
 #include <sys/types.h>
@@ -31,14 +32,12 @@ void execute_command(char *command);
  * @func: execute the buildin command
  */
 
-typedef void (*build_func)(char **args);
-
 typedef struct mybuild
 {
 	char *name;
 	build_func func;
 } mybuild;
-
+typedef void (*build_func)(char **args);
 void(*builtins_check(char **args))(char **args);
 
 /* prototypes for builtins*/
@@ -49,4 +48,26 @@ void env(char **args __attribute__ ((unused)));
 void set_custom_env(char **args);
 void unset_custom_env(char **args);
 
+/* path */
+
+/**
+ * struct list_path - inked list of path directories
+ * @path: path directory
+ * @next: pointer to next node
+ */
+
+typedef struct list_path
+{
+	char *path;
+	struct list_path *next;
+} list_path;
+
+list_path *_path(const char *path);
+list_path *add_node_end(list_path **head, const char *path);
+char *which_path(char *filename, list_path *head);
+void free_list(list_path *head);
+
+/* token */
+
+char **token(char *str);
 #endif
