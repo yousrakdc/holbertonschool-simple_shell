@@ -20,7 +20,7 @@ int main(void)
 	{
 		head = _path(value);
 	}
-	free (value);
+	free(value);
 
 	while (1)
 	{
@@ -33,17 +33,13 @@ int main(void)
 		{
 			execute_it(resolved_path);
 			free(resolved_path);
-
-		file = which_path(file, head);
 		}
-
 		else
-			execute_it(file);
-	}
-	free(file);
-
-	if (file)
+		{
+			fprintf(stderr, "Error: Command not found: %s\n", file);
+		}
 		free(file);
+	}
 
 	if (head)
 		free_list(head);
