@@ -14,7 +14,7 @@ char **token(char *str)
 {
 	char **tokens;
 	char *token;
-	unsigned int i;
+	unsigned int i, j;
 
 	tokens = (char **)malloc(BUFFER_SIZE * sizeof(char *));
 	if (!tokens)
@@ -32,7 +32,7 @@ char **token(char *str)
 		if (!tokens[i])
 		{
 			/* Free previously allocated memory*/
-			for (unsigned int j = 0; j < i; j++)
+			for (j = 0; j < i; j++)
 				free(tokens[j]);
 
 			free(tokens);
