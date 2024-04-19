@@ -10,11 +10,6 @@
 #include <sys/wait.h>
 #include <errno.h>
 
-void _puts(char *str);
-int _strlen(char *s);
-char *_strdup(char *str);
-char *concat_all(char *name, char *sep, char *value);
-
 int main(void);
 char *get_filename();
 int execute_it(char *);
@@ -22,30 +17,6 @@ int execute_it(char *);
 /* prototype for print_env*/
 
 char *print_env(const char *name);
-
-/* prototype for check_builtins*/
-
-typedef void (*build_func)(char **args);
-
-/**
- * struct mybuild - pointer to function
- * @name: buildin command
- * @func: execute the buildin command
- */
-
-typedef struct mybuild
-{
-	char *name;
-	build_func func;
-} mybuild;
-
-/* prototypes for builtins*/
-
-void shell_exit(char **args);
-int custom_atoi(char *s);
-void env(char **args __attribute__ ((unused)));
-void set_custom_env(char **args);
-void unset_custom_env(char **args);
 
 /* path */
 
@@ -66,7 +37,4 @@ list_path *add_node_end(list_path **head, const char *path);
 char *which_path(char *filename, list_path *head);
 void free_list(list_path *head);
 
-/* token */
-
-char **token(char *str);
 #endif

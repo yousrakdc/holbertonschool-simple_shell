@@ -19,7 +19,6 @@ char *print_env(const char *name)
 		{
 			strcpy(copy, value);
 			/* Print the name and value of the environment variable */
-			printf("%s = %s\n", name, copy);
 			return (copy);
 		}
 		else

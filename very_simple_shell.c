@@ -58,7 +58,7 @@ char *get_filename()
 	int input;
 
 
-	printf("~B ");
+	printf("~€ ");
 	input = getline(&filename, &length, stdin);
 
 	if (input == -1)
