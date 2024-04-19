@@ -12,6 +12,7 @@ int main(void)
 	char *file;
 	list_path *head = NULL;
 	char *value = NULL;
+	char *resolved_path;
 
 	value = print_env("PATH");
 
@@ -26,18 +27,23 @@ int main(void)
 		file = get_filename();
 		if (!file)
 			break;
+		resolved_path = which_path(file, head);
+
+		if (resolved_path)
+		{
+			execute_it(resolved_path);
+			free(resolved_path);
 
 		file = which_path(file, head);
-
-		if (file)
-		{
-			execute_it(file);
-			free(file);
 		}
+
 		else
 			execute_it(file);
 	}
 	free(file);
+
+	if (file)
+		free(file);
 
 	if (head)
 		free_list(head);
@@ -52,7 +58,7 @@ int main(void)
 char *get_filename()
 {
 	char *filename = NULL;
-	size_t length;
+	size_t length = 0;
 	int input;
 
 
@@ -65,6 +71,9 @@ char *get_filename()
 		free(filename);
 		exit(EXIT_FAILURE); /* Better error handling */
 	}
+
+	if (filename[input - 1] == '\n')
+        filename[input - 1] = '\0';
 
 	return (filename);
 
