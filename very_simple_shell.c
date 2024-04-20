@@ -25,7 +25,7 @@ int main(void)
 	{
 		command = get_command();
 		if (!command)
-			break;
+			break; /*if ctrl + D = NULL -> exit the loop*/
 
 		if (command[0] == '/' || command[0] == '.')
 		{
@@ -42,11 +42,9 @@ int main(void)
 			execute_it(resolved_path);
 			free(resolved_path);
 		}
-
 	}
-	/* TODO deplacer au bon endroit */
-	if (head)
-		free_list(head);
+
+	free_list(head);
 	return (0);
 }
 
@@ -69,7 +67,7 @@ char *get_command()
 	{
 		printf("ctrl D \n");
 		free(command);
-		exit(EXIT_FAILURE); /* Better error handling */
+		return (NULL); /* You need me to patch the leak*/
 	}
 
 	if (command[input - 1] == '\n')
