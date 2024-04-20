@@ -11,7 +11,7 @@
 #include <errno.h>
 
 int main(void);
-char *get_filename();
+char *get_command();
 int execute_it(char *);
 
 /* prototype for print_env*/

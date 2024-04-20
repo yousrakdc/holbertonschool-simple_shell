@@ -9,69 +9,73 @@
 
 int main(void)
 {
-	char *file;
+	char *command;
 	list_path *head = NULL;
 	char *value = NULL;
 	char *resolved_path;
 
-	value = print_env("PATH");
+	value = getenv("PATH");
 
 	if (value)
 	{
 		head = _path(value);
 	}
-	free(value);
 
 	while (1)
 	{
-		file = get_filename();
-		if (!file)
+		command = get_command();
+		if (!command)
 			break;
-		resolved_path = which_path(file, head);
+
+		if (command[0] == '/' || command[0] == '.')
+		{
+			resolved_path = command;
+		}
+		else
+		{
+			resolved_path = which_path(command, head);
+			free(command);
+		}
 
 		if (resolved_path)
 		{
 			execute_it(resolved_path);
 			free(resolved_path);
 		}
-		else
-		{
-			fprintf(stderr, "Error: Command not found: %s\n", file);
-		}
-		free(file);
-	}
 
+	}
+	/* TODO deplacer au bon endroit */
 	if (head)
 		free_list(head);
 	return (0);
 }
 
 /**
- * get_filename - read the filename given by the user
+ * get_command - read the command given by the user
  * Return: the name of the file to execute
  */
 
-char *get_filename()
+char *get_command()
 {
-	char *filename = NULL;
+	char *command = NULL;
 	size_t length = 0;
 	int input;
 
 
 	printf("~€ ");
-	input = getline(&filename, &length, stdin);
+	input = getline(&command, &length, stdin);
 
 	if (input == -1)
 	{
 		printf("ctrl D \n");
-		free(filename);
+		free(command);
 		exit(EXIT_FAILURE); /* Better error handling */
 	}
 
-	if (filename[input - 1] == '\n')
-        filename[input - 1] = '\0';
+	if (command[input - 1] == '\n')
+        command[input - 1] = '\0';
 
-	return (filename);
+	return (command);
 
 }
 
