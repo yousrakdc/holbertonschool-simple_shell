@@ -6,16 +6,6 @@
 void (*builtins_check(char **args))(char **args);
 
 /**
- * _isatty - checks if it's terminal
- */
-
-void _isatty(void)
-{
-	if (isatty(STDIN_FILENO))
-		_puts("#cisfun$ ");
-}
-
-/**
  * main - UNIX command line interpreter
  * Return: 0
  */
@@ -28,44 +18,53 @@ int main(void)
 	char *resolved_path = NULL;
 	void (*builtins_func)(char **args) = NULL;
 
-	value = _getenv("PATH");
-
-	if (value)
+	if (isatty(STDIN_FILENO))
 	{
-		head = _path(value);
-	}
+		value = _getenv("PATH");
 
-	while (1)
-	{
-		_isatty(); /* call the function to display the prompt */
-
-		command = get_command();
-		if (!command)
-			break; /*if ctrl + D = NULL -> exit the loop*/
-
-		builtins_func = builtins_check(&command);
-
-		if (builtins_func)
-			builtins_func(&command);
-
-		else if (command[0] == '/' || command[0] == '.')
+		if (value)
 		{
-			resolved_path = command;
+			head = _path(value);
 		}
 		else
 		{
-			resolved_path = which_path(command, head);
-			free(command);
+			fprintf(stderr, "Error: PATH environment variable not set. \n");
+			return (1);
 		}
 
-		if (resolved_path)
+		while (1)
 		{
-			execute_it(resolved_path);
-			free(resolved_path);
+
+			command = get_command();
+			if (!command)
+				exit_program(command, resolved_path, head);
+
+			builtins_func = builtins_check(&command);
+
+			if (builtins_func)
+				builtins_func(&command);
+
+			else if (command[0] == '/' || command[0] == '.')
+			{
+				resolved_path = strdup(command); /* to avoir modifying command*/
+
+			}
+			else
+			{
+				resolved_path = which_path(command, head);
+				free(command);
+			}
+
+			if (resolved_path)
+			{
+				execute_it(resolved_path);
+				free(resolved_path);
+			}
 		}
 	}
 
 	free_list(head);
+	exit_program(command, resolved_path, head);
 	return (0);
 }
 
