@@ -2,7 +2,8 @@
 
 /**
  * print_env - built-in to prints the environment
- * @args: array of arguments
+ * @name: name of the environment variable to be retrieved
+ * Return: NULL
  */
 
 char *print_env(const char *name)
