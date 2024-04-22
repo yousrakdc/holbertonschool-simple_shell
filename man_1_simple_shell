@@ -1,1 +1,77 @@
-man page
+.TH SIMPLE_SHELL 1 "HOLBERTOON_SCHOOL" "SIMPLE SHELL MANUAL"
+
+.SH NAME
+simple_shell \- UNIX command interpreter (shell)
+
+.SH SYNOPSIS
+.B ./hsh
+
+
+.SH DESCRIPTION
+
+
+.SH OVERVIEW
+
+
+.SH INVOCATION
+
+
+.SH LEXICAL STRUCTURE
+
+
+.SH QUOTING
+
+
+.B Backslash
+
+
+.B Single Quotes
+
+
+.B Double Quotes
+
+
+.SH RESERVED WORDS
+
+
+.B ./hsh
+
+.SH COMMANDS
+
+
+.SH SIMPLE COMMANDS
+
+
+.IP 1.
+
+
+.IP 2.
+
+
+.SH SEARCH AND EXECUTION
+
+
+.SH PATH SEARCH
+
+
+.SH COMMAND EXIT STATUS
+
+
+.SH PIPELINES
+
+
+.SH EXIT STATUS
+
+
+.SH ENVIRONMENT VARIABLES
+.B PATH
+The default search path for executables.
+
+.SH HISTORY
+
+
+.SH BUGS
+
+
+.SH AUTHOR
+
