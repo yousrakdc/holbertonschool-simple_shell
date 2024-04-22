@@ -15,9 +15,9 @@ int _strlen(char *s);
 char *_strdup(char *str);
 char *concat_all(char *name, char *sep, char *value);
 
+void _isatty(void);
 int main(void);
 char *get_command();
-void _isatty(void);
 char *get_filename();
 int execute_it(char *);
 
