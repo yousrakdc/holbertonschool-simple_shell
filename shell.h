@@ -10,6 +10,10 @@
 #include <sys/wait.h>
 #include <errno.h>
 
+
+/* Externe variable */
+extern char **environ;
+
 void _puts(char *str);
 int _strlen(char *s);
 char *_strdup(char *str);
@@ -67,6 +71,10 @@ list_path *_path(const char *path);
 list_path *add_node_end(list_path **head, const char *path);
 char *which_path(char *filename, list_path *head);
 void free_list(list_path *head);
+
+/* implementation of getenv*/
+
+char *_getenv(const char *name);
 
 /* token */
 
