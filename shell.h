@@ -16,6 +16,8 @@ char *_strdup(char *str);
 char *concat_all(char *name, char *sep, char *value);
 
 int main(void);
+char *get_command();
+void _isatty(void);
 char *get_filename();
 int execute_it(char *);
 
@@ -42,8 +44,8 @@ typedef struct mybuild
 /* prototypes for builtins*/
 
 void shell_exit(char **args);
-int custom_atoi(char *s);
 void env(char **args __attribute__ ((unused)));
+int custom_atoi(char *s); 
 void set_custom_env(char **args);
 void unset_custom_env(char **args);
 
