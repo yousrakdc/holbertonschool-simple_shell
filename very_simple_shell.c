@@ -4,7 +4,7 @@
 #define MAX_ARGS 20
 
 /**
- * _isatt - checks if it's terminal
+ * _isatty - checks if it's terminal
  */
 
 void _isatty(void)
