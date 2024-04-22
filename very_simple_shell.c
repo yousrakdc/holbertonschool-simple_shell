@@ -22,13 +22,13 @@ void _isatty(void)
 
 int main(void)
 {
-	char *command;
+	char *command = NULL;
 	list_path *head = NULL;
 	char *value = NULL;
-	char *resolved_path;
+	char *resolved_path = NULL;
 	void (*builtins_func)(char **args) = NULL;
 
-	value = getenv("PATH");
+	value = _getenv("PATH");
 
 	if (value)
 	{
