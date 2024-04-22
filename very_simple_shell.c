@@ -39,11 +39,17 @@ int main(void)
 			if (!command)
 				exit_program(command, resolved_path, head);
 
+			if(strcmp(command, "exit") == 0)
+				exit_program(command, resolved_path, head);
+
 			builtins_func = builtins_check(&command);
 
 			if (builtins_func)
+			{
 				builtins_func(&command);
-
+				free(command);
+				command = NULL;
+			}
 			else if (command[0] == '/' || command[0] == '.')
 			{
 				resolved_path = strdup(command); /* to avoir modifying command*/
@@ -52,13 +58,15 @@ int main(void)
 			else
 			{
 				resolved_path = which_path(command, head);
-				free(command);
 			}
+			free(command);
+			command = NULL;
 
 			if (resolved_path)
 			{
 				execute_it(resolved_path);
 				free(resolved_path);
+				resolved_path = NULL;
 			}
 		}
 	}
