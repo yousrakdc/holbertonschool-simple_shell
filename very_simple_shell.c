@@ -9,7 +9,7 @@
 
 void _isatty(void)
 {
-	if(isatty(STDIN_FILENO))
+	if (isatty(STDIN_FILENO))
 		_puts("#cisfun$ ");
 }
 
@@ -35,7 +35,7 @@ int main(void)
 	while (1)
 	{
 		_isatty(); /* call the function to display the prompt */
-		
+
 		command = get_command();
 		if (!command)
 			break; /*if ctrl + D = NULL -> exit the loop*/
