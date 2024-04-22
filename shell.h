@@ -10,6 +10,8 @@
 #include <sys/wait.h>
 #include <errno.h>
 
+/* main */
+
 int main(void);
 char *get_command();
 int execute_it(char *);
@@ -36,5 +38,9 @@ list_path *_path(const char *path);
 list_path *add_node_end(list_path **head, const char *path);
 char *which_path(char *filename, list_path *head);
 void free_list(list_path *head);
+
+/*implementation of getenv */
+
+char *_getenv(const char *name);
 
 #endif

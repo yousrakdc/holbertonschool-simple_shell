@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <signal.h>
 
 #define MAX_ARGS 20
 
@@ -61,6 +62,7 @@ char *get_command()
 
 
 	printf("~€ ");
+
 	input = getline(&command, &length, stdin);
 
 	if (input == -1)
@@ -70,8 +72,9 @@ char *get_command()
 		return (NULL); /* You need me to patch the leak*/
 	}
 
+
 	if (command[input - 1] == '\n')
-        command[input - 1] = '\0';
+		command[input - 1] = '\0';
 
 	return (command);
 
