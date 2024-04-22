@@ -15,33 +15,36 @@ int main(void)
 	char *value = NULL;
 	char *resolved_path;
 
-	value = _getenv("PATH");
-
-	if (value)
+	if (isatty(STDIN_FILENO))
 	{
-		head = _path(value);
-	}
+		value = _getenv("PATH");
 
-	while (1)
-	{
-		command = get_command();
-		if (!command)
-			break; /*if ctrl + D = NULL -> exit the loop*/
-
-		if (command[0] == '/' || command[0] == '.')
+		if (value)
 		{
-			resolved_path = command;
-		}
-		else
-		{
-			resolved_path = which_path(command, head);
-			free(command);
+			head = _path(value);
 		}
 
-		if (resolved_path)
+		while (1)
 		{
-			execute_it(resolved_path);
-			free(resolved_path);
+			command = get_command();
+			if (!command)
+				break; /*if ctrl + D = NULL -> exit the loop*/
+
+			if (command[0] == '/' || command[0] == '.')
+			{
+				resolved_path = command;
+			}
+			else
+			{
+				resolved_path = which_path(command, head);
+				free(command);
+			}
+
+			if (resolved_path)
+			{
+				execute_it(resolved_path);
+				free(resolved_path);
+			}
 		}
 	}
 
