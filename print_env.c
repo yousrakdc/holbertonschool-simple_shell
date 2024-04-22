@@ -27,6 +27,7 @@ char *print_env(const char *name)
 			printf("Error: Unable to allocate memory\n");
 			return (NULL);
 		}
+		free(copy);
 	}
 	else
 	{
