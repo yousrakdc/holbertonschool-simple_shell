@@ -3,6 +3,8 @@
 
 #define MAX_ARGS 20
 
+void (*builtins_check(char **args))(char **args);
+
 /**
  * _isatty - checks if it's terminal
  */
@@ -24,6 +26,7 @@ int main(void)
 	list_path *head = NULL;
 	char *value = NULL;
 	char *resolved_path;
+	void (*builtins_func)(char **args) = NULL;
 
 	value = getenv("PATH");
 
@@ -40,7 +43,12 @@ int main(void)
 		if (!command)
 			break; /*if ctrl + D = NULL -> exit the loop*/
 
-		if (command[0] == '/' || command[0] == '.')
+		builtins_func = builtins_check(&command);
+
+		if (builtins_func)
+			builtins_func(&command);
+
+		else if (command[0] == '/' || command[0] == '.')
 		{
 			resolved_path = command;
 		}
