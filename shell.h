@@ -79,4 +79,7 @@ char *_getenv(const char *name);
 /* token */
 
 char **token(char *str);
+
+void exit_program(char *command, char *resolved_path, list_path *head);
+
 #endif
