@@ -4,32 +4,6 @@
 #define MAX_ARGS 20
 
 /**
- * get_command - reads the command given by user
- * Return: the command entered by the user
- */
-
-char *get_command()
-{
-	char *command = NULL;
-	size_t length = 0;
-	int input;
-
-	printf("$ ");
-	input = getline(&command, &length, stdin);
-
-	if (input == -1)
-	{
-		printf("ctrl D \n");
-		free(command);
-		exit(1);
-	}
-	if (command[input - 1] == '\n')
-		command[input - 1] = '\0';
-
-	return (command);
-}
-
-/**
  * execute_command - execute a command with its arguments in a child process
  * @command: command to execute
  */
