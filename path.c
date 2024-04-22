@@ -79,7 +79,7 @@ list_path *add_node_end(list_path **head, const char *path)
 
 /**
  * which_path - finds the pathname of a filename
- * @filename: name of file or command
+ * @command: name of file or command
  * @head: head of linked list of path directories
  * Return: pathname of filename or NULL if no match or on error
  */
@@ -136,4 +136,4 @@ void free_list(list_path *head)
 		free(head);
 		head = next_node;
 	}
-}	
+}

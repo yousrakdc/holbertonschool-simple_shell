@@ -15,7 +15,7 @@ int main(void)
 	char *value = NULL;
 	char *resolved_path;
 
-	value = getenv("PATH");
+	value = _getenv("PATH");
 
 	if (value)
 	{
@@ -60,7 +60,6 @@ char *get_command()
 	size_t length = 0;
 	int input;
 
-
 	printf("~€ ");
 
 	input = getline(&command, &length, stdin);
@@ -72,12 +71,10 @@ char *get_command()
 		return (NULL); /* You need me to patch the leak*/
 	}
 
-
 	if (command[input - 1] == '\n')
 		command[input - 1] = '\0';
 
 	return (command);
-
 }
 
 
