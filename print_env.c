@@ -7,7 +7,7 @@
 
 char *print_env(const char *name)
 {
-	const char *value = getenv(name);
+	const char *value = _getenv(name);
 	char *copy;
 
 	/* Check if the environment variable exists */
