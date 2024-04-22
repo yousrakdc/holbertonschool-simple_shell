@@ -10,8 +10,8 @@
 #include <sys/wait.h>
 #include <errno.h>
 
-
 /* Externe variable */
+
 extern char **environ;
 
 void _puts(char *str);
