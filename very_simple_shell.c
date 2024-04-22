@@ -83,18 +83,18 @@ char *get_command()
 
 /**
  * execute_it - execute a command in a child process
- * @filename: the filename to execute
+ * @command: the command to execute
  * Return: 0 on success or -1 on failure
  */
 
-int execute_it(char *filename)
+int execute_it(char *command)
 {
 	pid_t pid;
 	char *argv[MAX_ARGS + 1]; /* One extra for NULL */
 	int argc = 0;
 	char *token;
 
-	token = strtok(filename, " ");
+	token = strtok(command, " ");
 
 	while (token != NULL && argc < MAX_ARGS)
 	{
@@ -108,7 +108,7 @@ int execute_it(char *filename)
 
 	if (pid == 0)
 	{
-		printf("execute command : %s \n", filename);
+		printf("execute command : %s \n", command);
 		if (execv(argv[0], argv) == -1)
 		{
 			perror("Error");
