@@ -39,33 +39,41 @@ int main(void)
 		if (!command)
 			break; /*if ctrl + D = NULL -> exit the loop*/
 
-		else if(strcmp(command, "exit") == 0)
+		if(strcmp(command, "exit") == 0)
 			exit_program(command, head, resolved_path);
 
 		else if(strcmp(command, "env") == 0)
+		{
 			print_env(environ);
+			free(command);
+			command = NULL;
+		}
 
 		else
 		{
 			if (command[0] == '/' || command[0] == '.')
-			{
 				resolved_path = command;
-			}
 			else
 			{
 				resolved_path = which_path(command, head);
 				free(command);
+				command = NULL;
 			}
 
 			if (resolved_path)
 			{
 				execute_it(resolved_path);
 				free(resolved_path);
+				resolved_path = NULL;
 			}
 		}
 	}
 
-	free_list(head);
+	if (head)
+	{
+		free_list(head);
+		head = NULL;
+	}
 	return (0);
 }
 
