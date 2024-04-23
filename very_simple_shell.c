@@ -3,6 +3,16 @@
 
 #define MAX_ARGS 20
 
+/*
+ * _isatty - checks if terminal
+ */
+
+void _isatty(void)
+{
+	if (isatty(STDIN_FILENO))
+		_puts("in terminal ");
+}
+
 void (*builtins_check(char **args))(char **args);
 
 /**
@@ -12,67 +22,45 @@ void (*builtins_check(char **args))(char **args);
 
 int main(void)
 {
-	char *command = NULL;
+
+	char *command = NULL, *resolved_path = NULL;
 	list_path *head = NULL;
-	char *value = NULL;
-	char *resolved_path = NULL;
-	void (*builtins_func)(char **args) = NULL;
+	char *path_env = NULL;
 
-	if (isatty(STDIN_FILENO))
+	value = _getenv("PATH");
+
+	if (value)
+		head = _path(value);
+
+	while (1)
 	{
-		value = _getenv("PATH");
+		_isatty();
+		command = get_command();
 
-		if (value)
-		{
-			head = _path(value);
-		}
+		if (!command)
+			break; /*if ctrl + D = NULL -> exit the loop*/
+
+		if (strcmp(command, "exit") == 0) /*Handle the built-in 'exit' command*/
+			exit_program(command, resolved_path, head);
+
+		if (strcmp(command, "env") == 0) /*Handle the built-in 'env' command*/
+			print_env();
+
+		if (command[0] == '/' || command[0] == '.') /* Resolve the path */
+			resolved_path = command;
 		else
 		{
-			fprintf(stderr, "Error: PATH environment variable not set. \n");
-			return (1);
+			resolved_path = which_path(command, head);
+			free(command);
 		}
 
-		while (1)
+		if (resolved_path) /* Execute the resolved command path */
 		{
-
-			command = get_command();
-			if (!command)
-				exit_program(command, resolved_path, head);
-
-			if(strcmp(command, "exit") == 0)
-				exit_program(command, resolved_path, head);
-
-			builtins_func = builtins_check(&command);
-
-			if (builtins_func)
-			{
-				builtins_func(&command);
-				free(command);
-				command = NULL;
-			}
-			else if (command[0] == '/' || command[0] == '.')
-			{
-				resolved_path = strdup(command); /* to avoir modifying command*/
-
-			}
-			else
-			{
-				resolved_path = which_path(command, head);
-			}
-			free(command);
-			command = NULL;
-
-			if (resolved_path)
-			{
-				execute_it(resolved_path);
-				free(resolved_path);
-				resolved_path = NULL;
-			}
+			execute_it(resolved_path);
+			free(resolved_path);
 		}
 	}
-
 	free_list(head);
-	exit_program(command, resolved_path, head);
 	return (0);
 }
 
