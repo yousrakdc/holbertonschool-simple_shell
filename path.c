@@ -26,7 +26,7 @@ list_path *_path(const char *path)
 		{
 			free_list(head); /* Free list and cpath on error */
 			free(cpath);
-			/* maybe free the token here too*/
+		
 			return (NULL);
 		}
 		token = strtok(NULL, ":");
