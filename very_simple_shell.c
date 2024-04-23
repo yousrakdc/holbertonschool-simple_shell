@@ -3,6 +3,8 @@
 
 #define MAX_ARGS 20
 
+
+
 /**
  * main - UNIX command line interpreter
  * Return: 0
@@ -30,26 +32,29 @@ int main(void)
 			if (!command)
 				break; /*if ctrl + D = NULL -> exit the loop*/
 
-			if(strcmp(command, "exit") == 0)
-				exit_program();
+			else if(strcmp(command, "exit") == 0)
+				exit_program(command, head, resolved_path);
 
-			if(strcmp(command, "env") == 0)
+			else if(strcmp(command, "env") == 0)
 				print_env(environ);
 
-			if (command[0] == '/' || command[0] == '.')
-			{
-				resolved_path = command;
-			}
 			else
 			{
-				resolved_path = which_path(command, head);
-				free(command);
-			}
+				if (command[0] == '/' || command[0] == '.')
+				{
+					resolved_path = command;
+				}
+				else
+				{
+					resolved_path = which_path(command, head);
+					free(command);
+				}
 
-			if (resolved_path)
-			{
-				execute_it(resolved_path);
-				free(resolved_path);
+				if (resolved_path)
+				{
+					execute_it(resolved_path);
+					free(resolved_path);
+				}
 			}
 		}
 	}

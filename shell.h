@@ -43,9 +43,9 @@ void free_list(list_path *head);
 char *_getenv(const char *name);
 
 /* prototype for print_env*/
-void *print_env(char **environ);
+void print_env(char **environ);
 
 /* prototype for exit */
-void exit_program(char **);
+void exit_program(char *command, list_path *head, char *resolved_path);
 
 #endif

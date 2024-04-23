@@ -7,12 +7,8 @@
  * @head: Pointer to the head of the linked list of paths. Will be freed.
  */
 
-void exit_program(char **args)
+void exit_program(char *command, list_path *head, char *resolved_path)
 {
-	char *command;
-	list_path *head;
-	char *resolved_path;
-
 	if (command)
 	{
 		free(command);
