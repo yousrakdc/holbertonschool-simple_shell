@@ -83,7 +83,7 @@ list_path *add_node_end(list_path **head, const char *path)
 
 /**
  * which_path - finds the pathname of a filename
- * @filename: name of file or command
+ * @command: string representing a command name
  * @head: head of linked list of path directories
  * Return: pathname of filename or NULL if no match or on error
  */
