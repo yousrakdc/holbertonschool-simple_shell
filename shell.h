@@ -35,7 +35,7 @@ int _strlen(char *s);
 int main(void);
 char *get_command();
 char **parse_command(char *command);
-int execute_it(char *command, list_path *head);
+int execute_it(char *command);
 /* path */
 
 list_path *_path(const char *path);
