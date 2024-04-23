@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <string.h>
@@ -16,18 +17,12 @@ extern char **environ;
 
 void _puts(char *str);
 int _strlen(char *s);
-char *_strdup(char *str);
-char *concat_all(char *name, char *sep, char *value);
 
 void _isatty(void);
 int main(void);
 char *get_command();
 char *get_filename();
 int execute_it(char *);
-
-/* prototype for print_env*/
-
-char *print_env(const char *name);
 
 /* prototype for check_builtins*/
 
@@ -47,11 +42,8 @@ typedef struct mybuild
 
 /* prototypes for builtins*/
 
-void shell_exit(char **args);
-void env(char **args __attribute__ ((unused)));
-int custom_atoi(char *s); 
-void set_custom_env(char **args);
-void unset_custom_env(char **args);
+char *print_env(const char *name);
+void exit_program(char *command, char *resolved_path, list_path *head);
 
 /* path */
 
@@ -79,7 +71,5 @@ char *_getenv(const char *name);
 /* token */
 
 char **token(char *str);
-
-void exit_program(char *command, char *resolved_path, list_path *head);
 
 #endif
