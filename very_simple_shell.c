@@ -31,10 +31,10 @@ int main(void)
 				break; /*if ctrl + D = NULL -> exit the loop*/
 
 			if(strcmp(command, "exit") == 0)
-				exit_program(command, resolved_path, head);
+				exit_program();
 
 			if(strcmp(command, "env") == 0)
-				print_env();
+				print_env(environ);
 
 			if (command[0] == '/' || command[0] == '.')
 			{

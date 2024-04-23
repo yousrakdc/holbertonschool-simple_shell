@@ -5,6 +5,7 @@
  * @path: string of path value
  * Return: pointer to the created linked list, or NULL on failure
  */
+
 list_path *_path(const char *path)
 {
 	char *cpath, *token;
