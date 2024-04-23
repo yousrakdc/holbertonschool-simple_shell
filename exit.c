@@ -1,5 +1,7 @@
 #include "shell.h"
 
+void free_list(list_path *head);
+
 /**
  * exit_program - built-in to exits the shell
  * @command: Pointer to the command string. Will be freed if not NULL.
