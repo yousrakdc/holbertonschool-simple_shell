@@ -11,6 +11,15 @@ It's a command-line interface program that provides users with a way to interact
 
 List of files 
 
+- man_1_simple_shell
+- README.md
+- AUTHORS
+- very_simple_shell.c
+- shell.h
+- print_env.c
+- exit.c
+- _getenv.c
+
 
 ## Authors
 
