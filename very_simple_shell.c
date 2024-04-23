@@ -3,18 +3,6 @@
 
 #define MAX_ARGS 20
 
-/*
- * _isatty - checks if terminal
- */
-
-void _isatty(void)
-{
-	if (isatty(STDIN_FILENO))
-		_puts("in terminal ");
-}
-
-void (*builtins_check(char **args))(char **args);
-
 /**
  * main - UNIX command line interpreter
  * Return: 0
@@ -22,58 +10,44 @@ void (*builtins_check(char **args))(char **args);
 
 int main(void)
 {
-
-	char *command = NULL, *resolved_path = NULL;
+	char *command;
 	list_path *head = NULL;
 	char *value = NULL;
 
-	value = _getenv("PATH");
-
-	if (value)
-		head = _path(value);
-
-	while (1)
+	/* Check if the standard input is a terminal (interactive mode).*/
+	if (isatty(STDIN_FILENO))
 	{
-		_isatty();
-		command = get_command();
-		if (!command)
-			break; /*if ctrl + D = NULL -> exit the loop*/
+		value = _getenv("PATH");
 
-		if(strcmp(command, "exit") == 0)
-			exit_program(command, head, resolved_path);
+		/* If the PATH variable is found, create a linked list of paths. */
+		if (value)
+			head = _path(value);
 
-		else if(strcmp(command, "env") == 0)
+		while (1) /* Main loop to read and execute commands. */
 		{
-			print_env(environ);
-			free(command);
-			command = NULL;
-		}
+			command = get_command();
+			if (!command)
+				break; /*if ctrl + D = NULL -> exit the loop*/
 
-		else
-		{
-			if (command[0] == '/' || command[0] == '.')
-				resolved_path = command;
-			else
+			/* Handle specific commands such as "exit" and "env"*/
+			else if (strcmp(command, "exit") == 0)
+				exit_program(command, head);
+
+			else if (strcmp(command, "env") == 0)
 			{
-				resolved_path = which_path(command, head);
+				print_env(environ);
 				free(command);
 				command = NULL;
 			}
-
-			if (resolved_path)
+			else
 			{
-				execute_it(resolved_path);
-				free(resolved_path);
-				resolved_path = NULL;
+				/* Execute other commands using the execute_it function.*/
+				execute_it(command, head);
+				free(command);
 			}
 		}
 	}
-
-	if (head)
-	{
-		free_list(head);
-		head = NULL;
-	}
+	free_list(head); /* Free the linked list of paths when program finishes.*/
 	return (0);
 }
 
@@ -88,56 +62,78 @@ char *get_command()
 	size_t length = 0;
 	int input;
 
-
 	printf("~€ ");
 
 	input = getline(&command, &length, stdin);
 
 	if (input == -1)
 	{
-		printf("ctrl D \n");
 		free(command);
-		return (NULL); /* You need me to patch the leak*/
+		return (NULL); /* indicates no input */
 	}
 
-
+	/* Check if the last character in the command is a newline.*/
 	if (command[input - 1] == '\n')
+		/*Replace the newline character with a null terminator.*/
 		command[input - 1] = '\0';
-
 	return (command);
-
 }
 
-
 /**
- * execute_it - execute a command in a child process
- * @filename: the filename to execute
- * Return: 0 on success or -1 on failure
+ * parse_command - define if command is a path or not
+ * @command: the command to execute
+ * Return: Argv aka the command to execute
  */
 
-int execute_it(char *filename)
+char **parse_command(char *command)
 {
-	pid_t pid;
-	char *argv[MAX_ARGS + 1]; /* One extra for NULL */
 	int argc = 0;
 	char *token;
+	char **argv;
 
-	token = strtok(filename, " ");
+	/* Allocate memory for the array of arguments */
+	argv = malloc(sizeof(char *) * MAX_ARGS + 1);
+	token = strtok(command, " ");
 
+	/* Loop to parse each token and store it in the argv array. */
 	while (token != NULL && argc < MAX_ARGS)
 	{
 		argv[argc++] = token;
 		token = strtok(NULL, " ");
 	}
 
-	argv[argc] = NULL;
+	argv[argc] = NULL; /* Ensure the argument list is NULL-terminated. */
 
+	return (argv); /* Return the array of parsed arguments. */
+}
+
+/**
+ * execute_it - execute a command in a child process
+ * @command: the command to execute
+ * @head: the linked list used to parse
+ * Return: 0 on success or -1 on failure
+ */
+
+int execute_it(char *command, list_path *head)
+{
+	pid_t pid;
+	char **argv;
+	int freeArg0 = 0;
+
+	/* Parse the command string to get the array of arguments. */
+	argv = parse_command(command);
+	if (argv[0][0] != '/' && argv[0][0] != '.')
+	{
+		argv[0] = which_path(argv[0], head);
+		freeArg0 = 1;
+	}
 	pid = fork();
 
-	if (pid == 0)
+	if (pid == 0) /*Check if the fork operation was successful.*/
 	{
-		printf("execute command : %s \n", filename);
-		if (execv(argv[0], argv) == -1)
+		printf("execute command : %s \n", command);
+
+		if (execv(argv[0], argv) == -1)/* Try to execute the command using execv.*/
 		{
 			perror("Error");
 			exit(EXIT_FAILURE);
@@ -146,13 +142,17 @@ int execute_it(char *filename)
 	else if (pid == -1)
 	{
 		printf("Error : fork failure");
+		if (freeArg0 == 1) /* Free the resolved path if necessary. */
+			free(argv[0]);
+		free(argv);
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
-		printf("I'm waiting \n");
-		waitpid(pid, NULL, 0);
+		if (freeArg0 == 1)
+			free(argv[0]);
+		free(argv);
+		waitpid(pid, NULL, 0); /* Wait for the child process to finish.*/
 	}
-
 	return (0);
 }
