@@ -1,39 +1,17 @@
 #include "shell.h"
 
 /**
- * print_env - built-in to prints the environment
- * @name: name of the environment variable to be retrieved
- * Return: NULL
+ * print_env - built-in to prints the environments
  */
 
-char *print_env(const char *name)
+void print_env(char **environ)
 {
-	const char *value = _getenv(name);
-	char *copy;
+	int i = 0;
 
-	/* Check if the environment variable exists */
-	if (value != NULL)
+	printf("My environment:\n");
+	while (environ[i] != NULL)
 	{
-		/* Make a copy of the string */
-		copy = malloc(strlen(value) + 1);
-		if (copy != NULL)
-		{
-			strcpy(copy, value);
-			/* Print the name and value of the environment variable */
-			return (copy);
-		}
-		else
-		{
-			/* Handle memory allocation failure */
-			printf("Error: Unable to allocate memory\n");
-			return (NULL);
-		}
-		free(copy);
-	}
-	else
-	{
-		/* If the environment variable is not found, print a message */
-		printf("%s = not found\n", name);
-		return (NULL);
+		printf("%s\n", environ[i]);
+		i++;
 	}
 }

@@ -24,27 +24,6 @@ char *get_command();
 char *get_filename();
 int execute_it(char *);
 
-/* prototype for check_builtins*/
-
-typedef void (*build_func)(char **args);
-
-/**
- * struct mybuild - pointer to function
- * @name: buildin command
- * @func: execute the buildin command
- */
-
-typedef struct mybuild
-{
-	char *name;
-	build_func func;
-} mybuild;
-
-/* prototypes for builtins*/
-
-char *print_env(const char *name);
-void exit_program(char *command, char *resolved_path, list_path *head);
-
 /* path */
 
 /**
@@ -63,6 +42,11 @@ list_path *_path(const char *path);
 list_path *add_node_end(list_path **head, const char *path);
 char *which_path(char *filename, list_path *head);
 void free_list(list_path *head);
+
+/* prototypes for builtins*/
+
+void print_env(char **environ);
+void exit_program(char *command, list_path *head, char *resolved_path);
 
 /* implementation of getenv*/
 
