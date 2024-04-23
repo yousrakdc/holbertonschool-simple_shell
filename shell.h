@@ -13,14 +13,7 @@
 /* Externe variable */
 extern char **environ;
 
-/* char * head; */
-
-/* main */
-int main(void);
-char *get_command();
-int execute_it(char *);
-
-/* path */
+/* path handling */
 
 /**
  * struct list_path - inked list of path directories
@@ -34,6 +27,13 @@ typedef struct list_path
 	struct list_path *next;
 } list_path;
 
+/* main */
+int main(void);
+char *get_command();
+char **parse_command(char *command, list_path *head);
+int execute_it(char *command, list_path *head);
+
+/* parsing */
 list_path *_path(const char *path);
 list_path *add_node_end(list_path **head, const char *path);
 char *which_path(char *filename, list_path *head);
@@ -46,6 +46,6 @@ char *_getenv(const char *name);
 void print_env(char **environ);
 
 /* prototype for exit */
-void exit_program(char *command, list_path *head, char *resolved_path);
+void exit_program(char *command, list_path *head);
 
 #endif

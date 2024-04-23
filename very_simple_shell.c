@@ -3,8 +3,6 @@
 
 #define MAX_ARGS 20
 
-
-
 /**
  * main - UNIX command line interpreter
  * Return: 0
@@ -15,7 +13,6 @@ int main(void)
 	char *command;
 	list_path *head = NULL;
 	char *value = NULL;
-	char *resolved_path = NULL;
 
 	if (isatty(STDIN_FILENO))
 	{
@@ -32,29 +29,20 @@ int main(void)
 			if (!command)
 				break; /*if ctrl + D = NULL -> exit the loop*/
 
-			else if(strcmp(command, "exit") == 0)
-				exit_program(command, head, resolved_path);
+			else if (strcmp(command, "exit") == 0)
+				exit_program(command, head);
 
-			else if(strcmp(command, "env") == 0)
+			else if (strcmp(command, "env") == 0)
+			{
 				print_env(environ);
+				free(command);
+				command = NULL;
+			}
 
 			else
 			{
-				if (command[0] == '/' || command[0] == '.')
-				{
-					resolved_path = command;
-				}
-				else
-				{
-					resolved_path = which_path(command, head);
-					free(command);
-				}
-
-				if (resolved_path)
-				{
-					execute_it(resolved_path);
-					free(resolved_path);
-				}
+				execute_it(command, head);
+				free(command);
 			}
 		}
 	}
@@ -91,20 +79,20 @@ char *get_command()
 	return (command);
 }
 
-
 /**
- * execute_it - execute a command in a child process
+ * parse_command - define if command is a path or not
  * @command: the command to execute
- * Return: 0 on success or -1 on failure
- */
+ * @head: the linked list used to parse
+ * Return: Argv aka the command to execute
+*/
 
-int execute_it(char *command)
+char **parse_command(char *command, list_path *head)
 {
-	pid_t pid;
-	char *argv[MAX_ARGS + 1]; /* One extra for NULL */
 	int argc = 0;
 	char *token;
+	char **argv; /* One extra for NULL */
 
+	argv = malloc(sizeof(char *) * MAX_ARGS + 1);
 	token = strtok(command, " ");
 
 	while (token != NULL && argc < MAX_ARGS)
@@ -114,6 +102,27 @@ int execute_it(char *command)
 	}
 
 	argv[argc] = NULL;
+
+	if (argv[0][0] != '/' && argv[0][0] != '.')
+	{
+		argv[0] = which_path(argv[0], head);
+	}
+	return (argv);
+}
+
+/**
+ * execute_it - execute a command in a child process
+ * @command: the command to execute
+ * @head: the linked list used to parse
+ * Return: 0 on success or -1 on failure
+ */
+
+int execute_it(char *command, list_path *head)
+{
+	pid_t pid;
+	char **argv;
+
+	argv = parse_command(command, head);
 
 	pid = fork();
 
@@ -129,11 +138,13 @@ int execute_it(char *command)
 	else if (pid == -1)
 	{
 		printf("Error : fork failure");
+		free(argv);
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
 		printf("I'm waiting \n");
+		free(argv);
 		waitpid(pid, NULL, 0);
 	}
 
