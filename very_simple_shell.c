@@ -25,7 +25,7 @@ int main(void)
 
 	char *command = NULL, *resolved_path = NULL;
 	list_path *head = NULL;
-	char *path_env = NULL;
+	char *value = NULL;
 
 	value = _getenv("PATH");
 
@@ -36,30 +36,35 @@ int main(void)
 	{
 		_isatty();
 		command = get_command();
-
 		if (!command)
 			break; /*if ctrl + D = NULL -> exit the loop*/
 
-		if (strcmp(command, "exit") == 0) /*Handle the built-in 'exit' command*/
-			exit_program(command, resolved_path, head);
+		else if(strcmp(command, "exit") == 0)
+			exit_program(command, head, resolved_path);
 
-		if (strcmp(command, "env") == 0) /*Handle the built-in 'env' command*/
-			print_env();
+		else if(strcmp(command, "env") == 0)
+			print_env(environ);
 
-		if (command[0] == '/' || command[0] == '.') /* Resolve the path */
-			resolved_path = command;
 		else
 		{
-			resolved_path = which_path(command, head);
-			free(command);
-		}
+			if (command[0] == '/' || command[0] == '.')
+			{
+				resolved_path = command;
+			}
+			else
+			{
+				resolved_path = which_path(command, head);
+				free(command);
+			}
 
-		if (resolved_path) /* Execute the resolved command path */
-		{
-			execute_it(resolved_path);
-			free(resolved_path);
+			if (resolved_path)
+			{
+				execute_it(resolved_path);
+				free(resolved_path);
+			}
 		}
 	}
+
 	free_list(head);
 	return (0);
 }
