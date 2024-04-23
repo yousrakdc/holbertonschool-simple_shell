@@ -43,7 +43,7 @@ int main(void)
 		else
 		{
 			/* Execute other commands using the execute_it function.*/
-			execute_it(command);
+			execute_it(command, head);
 			free(command);
 		}
 	}
@@ -121,25 +121,39 @@ char **parse_command(char *command)
  * Return: 0 on success or -1 on failure
  */
 
-int execute_it(char *command)
+int execute_it(char *command, list_path *head)
 {
 	pid_t pid;
 	char **argv;
+	int freeArg0 = 0;
+	char *resolved_path;
 
-	/* Parse the command string to get the array of arguments. */
-	argv = parse_command(command);
+	argv = parse_command(command); /* Parse the command string to get the array of args. */
 
-	if (argv == NULL)
+	if (!argv)
 	{
 		perror("Allocation error");
-		exit(EXIT_FAILURE);
+		return (-1);
 	}
 
 	if (!argv[0])
 	{
 		perror("Invalid command");
-		free(argv);
+		free_argv(argv, freeArg0);
 		return (-1);
+	}
+
+	if (argv[0][0] != '/' && argv[0][0] != '.')
+	{
+		resolved_path = which_path(argv[0], head);
+		if (!resolved_path)
+		{
+			perror("Command not found");
+			free(argv);
+			return (-1);
+		}
+		argv[0] = resolved_path;
+		freeArg0 = 1;
 	}
 	pid = fork();
 
@@ -147,21 +161,27 @@ int execute_it(char *command)
 	{
 		execv(argv[0], argv);/* Try to execute the command using execv.*/
 		perror("Error");
-		free(argv);
+		free_argv(argv, freeArg0);
 		exit(EXIT_FAILURE);
 
 	}
 	else if (pid == -1) /* Fork failure */
 	{
 		perror("Error : fork failure");
-		free(argv);
+		free_argv(argv, freeArg0);
 		return (-1);
 	}
 	else
 	{
 		waitpid(pid, NULL, 0); /* Wait for the child process to finish.*/
-
-		free(argv);
+		free_argv(argv, freeArg0);
+		return (0);
 	}
-	return (0);
+}
+
+void free_argv(char **argv, int freeArg0)
+{
+	if (argv[0] && freeArg0 == 1)
+		free(argv[0]);
+	free(argv);
 }
