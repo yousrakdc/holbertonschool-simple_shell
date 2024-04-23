@@ -2,6 +2,7 @@
 
 /**
  * print_env - built-in to prints the environments
+ * @environ: environment of the program
  */
 
 void print_env(char **environ)
