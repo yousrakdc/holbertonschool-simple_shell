@@ -1,17 +1,16 @@
 #include "shell.h"
 
 /**
- * print_env - built-in to prints the environment
- * @args: array of arguments
+ * print_env - built-in to prints the environments
  */
 
- void print_env(void)
+void print_env(void)
 {
 	int i = 0;
 
-	while(environ[i] != NULL)
+	while (environ[i] != NULL)
 	{
-		printf("Environ: %s", environ);
+		printf("My environment: %s", environ[i]);
 		i++;
 	}
 }
