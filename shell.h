@@ -30,7 +30,7 @@ typedef struct list_path
 /* main */
 int main(void);
 char *get_command();
-char **parse_command(char *command, list_path *head);
+char **parse_command(char *command);
 int execute_it(char *command, list_path *head);
 
 /* parsing */

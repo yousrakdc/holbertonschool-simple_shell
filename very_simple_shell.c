@@ -86,7 +86,7 @@ char *get_command()
  * Return: Argv aka the command to execute
 */
 
-char **parse_command(char *command, list_path *head)
+char **parse_command(char *command)
 {
 	int argc = 0;
 	char *token;
@@ -103,10 +103,6 @@ char **parse_command(char *command, list_path *head)
 
 	argv[argc] = NULL;
 
-	if (argv[0][0] != '/' && argv[0][0] != '.')
-	{
-		argv[0] = which_path(argv[0], head);
-	}
 	return (argv);
 }
 
@@ -121,14 +117,20 @@ int execute_it(char *command, list_path *head)
 {
 	pid_t pid;
 	char **argv;
+	int freeArg0 = 0;
 
-	argv = parse_command(command, head);
-
+	argv = parse_command(command);
+	if (argv[0][0] != '/' && argv[0][0] != '.')
+	{
+		argv[0] = which_path(argv[0], head);
+		freeArg0 = 1;
+	}
 	pid = fork();
 
 	if (pid == 0)
 	{
 		printf("execute command : %s \n", command);
+
 		if (execv(argv[0], argv) == -1)
 		{
 			perror("Error");
@@ -138,12 +140,16 @@ int execute_it(char *command, list_path *head)
 	else if (pid == -1)
 	{
 		printf("Error : fork failure");
+		if (freeArg0 == 1)
+			free(argv[0]);
 		free(argv);
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
 		printf("I'm waiting \n");
+		if (freeArg0 == 1)
+			free(argv[0]);
 		free(argv);
 		waitpid(pid, NULL, 0);
 	}
