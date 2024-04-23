@@ -1,3 +1,5 @@
+#include "shell.h"
+
 /**
  * builtins_check - Checks if a command is built-in
  * @args: array of arguments
@@ -10,10 +12,8 @@ void(*builtins_check(char **args))(char **args)
 	int i, j;
 
 	mybuild T[] = {
-		{"exit", shell_exit},
-		{"env", env},
-		{"setenv", set_custom_env},
-		{"unsetenv", unset_custom_env},
+		{"exit", exit_program},
+		{"env", print_env},
 		{NULL, NULL}
 	};
 

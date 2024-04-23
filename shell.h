@@ -11,18 +11,14 @@
 #include <errno.h>
 
 /* Externe variable */
-
 extern char **environ;
 
-/* main */
+/* char * head; */
 
+/* main */
 int main(void);
 char *get_command();
 int execute_it(char *);
-
-/* prototype for print_env*/
-
-char *print_env(const char *name);
 
 /* path */
 
@@ -44,7 +40,12 @@ char *which_path(char *filename, list_path *head);
 void free_list(list_path *head);
 
 /* implementation of getenv */
-
 char *_getenv(const char *name);
+
+/* prototype for print_env*/
+void *print_env(void);
+
+/* prototype for exit */
+void exit_program(char **args);
 
 #endif

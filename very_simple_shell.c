@@ -13,7 +13,7 @@ int main(void)
 	char *command;
 	list_path *head = NULL;
 	char *value = NULL;
-	char *resolved_path;
+	char *resolved_path = NULL;
 
 	if (isatty(STDIN_FILENO))
 	{
@@ -29,6 +29,12 @@ int main(void)
 			command = get_command();
 			if (!command)
 				break; /*if ctrl + D = NULL -> exit the loop*/
+
+			if(strcmp(command, "exit") == 0)
+				exit_program(command, resolved_path, head);
+
+			if(strcmp(command, "env") == 0)
+				print_env();
 
 			if (command[0] == '/' || command[0] == '.')
 			{
