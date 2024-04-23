@@ -14,37 +14,37 @@ int main(void)
 	list_path *head = NULL;
 	char *value = NULL;
 
-	/* Check if the standard input is a terminal (interactive mode).*/
-	if (isatty(STDIN_FILENO))
+	value = _getenv("PATH");
+
+	/* If the PATH variable is found, create a linked list of paths. */
+	if (value)
+		head = _path(value);
+
+	while (1) /* Main loop to read and execute commands. */
 	{
-		value = _getenv("PATH");
+		command = get_command();
+		if (!command)
+			break; /*if ctrl + D = NULL -> exit the loop*/
 
-		/* If the PATH variable is found, create a linked list of paths. */
-		if (value)
-			head = _path(value);
-
-		while (1) /* Main loop to read and execute commands. */
+		/* Handle specific commands such as "exit" and "env"*/
+		if (strcmp(command, "exit") == 0)
 		{
-			command = get_command();
-			if (!command)
-				break; /*if ctrl + D = NULL -> exit the loop*/
+			exit_program(command, head);
+			free(command);
+			free_list(head);
+			return (0);
+		}
 
-			/* Handle specific commands such as "exit" and "env"*/
-			else if (strcmp(command, "exit") == 0)
-				exit_program(command, head);
-
-			else if (strcmp(command, "env") == 0)
-			{
-				print_env(environ);
-				free(command);
-				command = NULL;
-			}
-			else
-			{
-				/* Execute other commands using the execute_it function.*/
-				execute_it(command, head);
-				free(command);
-			}
+		else if (strcmp(command, "env") == 0)
+		{
+			print_env(environ);
+			free(command);
+		}
+		else
+		{
+			/* Execute other commands using the execute_it function.*/
+			execute_it(command);
+			free(command);
 		}
 	}
 	free_list(head); /* Free the linked list of paths when program finishes.*/
@@ -62,7 +62,9 @@ char *get_command()
 	size_t length = 0;
 	int input;
 
-	printf("~€ ");
+	/* Check if the standard input is a terminal (interactive mode).*/
+	if (isatty(STDIN_FILENO) != 0)
+		printf("~€ ");
 
 	input = getline(&command, &length, stdin);
 
@@ -93,6 +95,12 @@ char **parse_command(char *command)
 
 	/* Allocate memory for the array of arguments */
 	argv = malloc(sizeof(char *) * MAX_ARGS + 1);
+	if (argv == NULL)
+	{
+		perror("Allocation error");
+		exit(EXIT_FAILURE);
+	}
+	argc = 0;
 	token = strtok(command, " ");
 
 	/* Loop to parse each token and store it in the argv array. */
@@ -110,49 +118,50 @@ char **parse_command(char *command)
 /**
  * execute_it - execute a command in a child process
  * @command: the command to execute
- * @head: the linked list used to parse
  * Return: 0 on success or -1 on failure
  */
 
-int execute_it(char *command, list_path *head)
+int execute_it(char *command)
 {
 	pid_t pid;
 	char **argv;
-	int freeArg0 = 0;
 
 	/* Parse the command string to get the array of arguments. */
 	argv = parse_command(command);
-	if (argv[0][0] != '/' && argv[0][0] != '.')
+
+	if (argv == NULL)
 	{
-		argv[0] = which_path(argv[0], head);
-		freeArg0 = 1;
+		perror("Allocation error");
+		exit(EXIT_FAILURE);
+	}
+
+	if (!argv[0])
+	{
+		perror("Invalid command");
+		free(argv);
+		return (-1);
 	}
 	pid = fork();
 
 	if (pid == 0) /*Check if the fork operation was successful.*/
 	{
-		printf("execute command : %s \n", command);
-
-		if (execv(argv[0], argv) == -1)/* Try to execute the command using execv.*/
-		{
-			perror("Error");
-			exit(EXIT_FAILURE);
-		}
-	}
-	else if (pid == -1)
-	{
-		printf("Error : fork failure");
-		if (freeArg0 == 1) /* Free the resolved path if necessary. */
-			free(argv[0]);
+		execv(argv[0], argv);/* Try to execute the command using execv.*/
+		perror("Error");
 		free(argv);
 		exit(EXIT_FAILURE);
+
+	}
+	else if (pid == -1) /* Fork failure */
+	{
+		perror("Error : fork failure");
+		free(argv);
+		return (-1);
 	}
 	else
 	{
-		if (freeArg0 == 1)
-			free(argv[0]);
-		free(argv);
 		waitpid(pid, NULL, 0); /* Wait for the child process to finish.*/
+
+		free(argv);
 	}
 	return (0);
 }
