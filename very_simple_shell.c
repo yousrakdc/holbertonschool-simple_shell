@@ -95,7 +95,8 @@ char **parse_command(char *command)
 
 	/* Allocate memory for the array of arguments */
 	argv = malloc(sizeof(char *) * MAX_ARGS + 1);
-	if (argv == NULL)
+
+	if (!argv)
 	{
 		perror("Allocation error");
 		exit(EXIT_FAILURE);
@@ -126,7 +127,6 @@ int execute_it(char *command, list_path *head)
 	pid_t pid;
 	char **argv;
 	int freeArg0 = 0;
-	char *resolved_path;
 
 	argv = parse_command(command); /* Parse the command string to get the array of args. */
 
@@ -139,20 +139,12 @@ int execute_it(char *command, list_path *head)
 	if (!argv[0])
 	{
 		perror("Invalid command");
-		free_argv(argv, freeArg0);
-		return (-1);
+		exit(EXIT_FAILURE);
 	}
 
 	if (argv[0][0] != '/' && argv[0][0] != '.')
 	{
-		resolved_path = which_path(argv[0], head);
-		if (!resolved_path)
-		{
-			perror("Command not found");
-			free(argv);
-			return (-1);
-		}
-		argv[0] = resolved_path;
+		argv[0] = which_path(argv[0], head);
 		freeArg0 = 1;
 	}
 	pid = fork();
