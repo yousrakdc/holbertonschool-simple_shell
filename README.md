@@ -89,8 +89,11 @@ gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
 exit
 ``````
 
-> or type CTRL + D:
+> or type CTRL + D.
 
+## Bugs
+
+No known bugs.
 
 ## Authors
 
