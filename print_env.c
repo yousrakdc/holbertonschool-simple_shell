@@ -9,8 +9,6 @@ void print_env(char **environ)
 {
 	int i = 0;
 
-	printf("My environment:\n");
-
 	/*Loop through the array of environment variables.*/
 	while (environ[i] != NULL)
 	{
