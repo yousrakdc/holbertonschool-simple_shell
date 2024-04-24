@@ -1,22 +1,22 @@
 #ifndef SHELL_H
 #define SHELL_H
 
-#include <stdio.h>
+#include <errno.h>
 #include <stdlib.h>
-#include <sys/stat.h>
-#include <unistd.h>
+#include <stdio.h>
 #include <string.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <errno.h>
+#include <unistd.h>
 
 /* Externe variable */
 extern char **environ;
 
-/* path handling */
+/* Path handling */
 
 /**
- * struct list_path - inked list of path directories
+ * Struct list_path - inked list of path directories
  * @path: path directory
  * @next: pointer to next node
  */
@@ -27,25 +27,26 @@ typedef struct list_path
 	struct list_path *next;
 } list_path;
 
-/* main */
+/* Main */
 int main(void);
 char *get_command();
 char **parse_command(char *command);
 int execute_it(char *command, list_path *head);
 
-/* parsing */
+/* Parsing */
 list_path *_path(const char *path);
 list_path *add_node_end(list_path **head, const char *path);
 char *which_path(char *filename, list_path *head);
 void free_list(list_path *head);
 
-/* implementation of getenv */
+/* Implementation of getenv */
 char *_getenv(const char *name);
 
-/* prototype for print_env*/
+/* Buildins-in prototypes */
+/* Prototype for print_env*/
 void print_env(char **environ);
 
-/* prototype for exit */
+/* Prototype for exit */
 void exit_program(char *command, list_path *head);
 
 #endif

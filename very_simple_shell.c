@@ -1,5 +1,4 @@
 #include "shell.h"
-#include <signal.h>
 
 #define MAX_ARGS 20
 
@@ -14,10 +13,9 @@ int main(void)
 	list_path *head = NULL;
 	char *value = NULL;
 
-	if (isatty(STDIN_FILENO))
-	{
 		value = _getenv("PATH");
 
+	/* If the PATH variable is found, create a linked list of paths. */
 		if (value)
 		{
 			head = _path(value);
@@ -36,7 +34,6 @@ int main(void)
 			{
 				print_env(environ);
 				free(command);
-				command = NULL;
 			}
 
 			else
@@ -45,7 +42,6 @@ int main(void)
 				free(command);
 			}
 		}
-	}
 
 	free_list(head);
 	return (0);
@@ -62,13 +58,15 @@ char *get_command()
 	size_t length = 0;
 	int input;
 
-	printf("~€ ");
+	if (isatty(STDIN_FILENO))
+	{
+		printf("~€ ");
+	}
 
 	input = getline(&command, &length, stdin);
 
 	if (input == -1)
 	{
-		printf("ctrl D \n");
 		free(command);
 		return (NULL); /* You need me to patch the leak*/
 	}
@@ -82,7 +80,6 @@ char *get_command()
 /**
  * parse_command - define if command is a path or not
  * @command: the command to execute
- * @head: the linked list used to parse
  * Return: Argv aka the command to execute
 */
 
@@ -90,7 +87,7 @@ char **parse_command(char *command)
 {
 	int argc = 0;
 	char *token;
-	char **argv; /* One extra for NULL */
+	char **argv;
 
 	argv = malloc(sizeof(char *) * MAX_ARGS + 1);
 	token = strtok(command, " ");
@@ -120,6 +117,7 @@ int execute_it(char *command, list_path *head)
 	int freeArg0 = 0;
 
 	argv = parse_command(command);
+
 	if (argv[0][0] != '/' && argv[0][0] != '.')
 	{
 		argv[0] = which_path(argv[0], head);
@@ -129,8 +127,6 @@ int execute_it(char *command, list_path *head)
 
 	if (pid == 0)
 	{
-		printf("execute command : %s \n", command);
-
 		if (execv(argv[0], argv) == -1)
 		{
 			perror("Error");
@@ -147,7 +143,6 @@ int execute_it(char *command, list_path *head)
 	}
 	else
 	{
-		printf("I'm waiting \n");
 		if (freeArg0 == 1)
 			free(argv[0]);
 		free(argv);
