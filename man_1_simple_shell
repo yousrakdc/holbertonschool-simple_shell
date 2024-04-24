@@ -1,77 +1,15 @@
-.TH SIMPLE_SHELL 1 "HOLBERTOON_SCHOOL" "SIMPLE SHELL MANUAL"
-
 .SH NAME
-simple_shell \- UNIX command interpreter (shell)
+simple_shell \- UNIX command interpreter
 
 .SH SYNOPSIS
 .B ./hsh
-
+[\fIcommand_name\fR] [\fIargument...\fR]
 
 .SH DESCRIPTION
+The simple shell is a simple command-line interface in C language that allows users to execute various commands and interact with the operating system. 
+The program is designed for both interactive and non-interactive use. It allows direct command input or execution of commands from a file.
 
-
-.SH OVERVIEW
-
-
-.SH INVOCATION
-
-
-.SH LEXICAL STRUCTURE
-
-
-.SH QUOTING
-
-
-.B Backslash
-
-
-.B Single Quotes
-
-
-.B Double Quotes
-
-
-.SH RESERVED WORDS
-
-
-.B ./hsh
-
-.SH COMMANDS
-
-
-.SH SIMPLE COMMANDS
-
-
-.IP 1.
-
-
-.IP 2.
-
-
-.SH SEARCH AND EXECUTION
-
-
-.SH PATH SEARCH
-
-
-.SH COMMAND EXIT STATUS
-
-
-.SH PIPELINES
-
-
-.SH EXIT STATUS
-
-
-.SH ENVIRONMENT VARIABLES
-.B PATH
-The default search path for executables.
-
-.SH HISTORY
-
-
-.SH BUGS
-
-
-.SH AUTHOR
+.SH USAGE
+The program is initiated by executing the compiled executable very_simple_shell.c. 
+The simple shell reads commands given to it in the terminal, interprets them, and executes them. For interactive mode 
 
