@@ -12,11 +12,11 @@ list_path *_path(const char *path)
 	list_path *head;
 
 	if (!path)
-		return (NULL);
+		return (NULL); /* Handle NULL input gracefully */
 
-	cpath = strdup(path);
+	cpath = strdup(path); /* Use strdup to copy path */
 	if (!cpath)
-		return (NULL);
+		return (NULL); /* Memory allocation failure */
 
 	head = NULL;
 	token = strtok(cpath, ":");
@@ -26,7 +26,7 @@ list_path *_path(const char *path)
 		if (!add_node_end(&head, token))
 		{
 			free_list(head);
-			free(cpath);
+			free(cpath); /* Free list and cpath on error */
 			/* maybe free the token here too*/
 			return (NULL);
 		}
@@ -51,7 +51,7 @@ list_path *add_node_end(list_path **head, const char *path)
 	if (!new_node)
 		return (NULL);
 
-
+	/* Allocate memory for the path string in the new node */
 	new_node->path = (char *)malloc(strlen(path) + 1);
 	if (!new_node->path)
 	{
@@ -59,14 +59,17 @@ list_path *add_node_end(list_path **head, const char *path)
 		return (NULL);
 	}
 
+	/* Copy the path string to the new node */
 	strcpy(new_node->path, path);
 
 	new_node->next = NULL;
 
+	/* Check if the linked list is empty */
 	if (*head == NULL)
 		*head = new_node;
 	else
 	{
+		/* Traverse the list to find the end */
 		list_path *current = *head;
 
 		while (current->next != NULL)
@@ -95,18 +98,21 @@ char *which_path(char *command, list_path *head)
 	if (command == NULL)
 		return (NULL);
 
-	while (tmp)
+	while (tmp)  /* Loop through each directory in the list */
 	{
+		/* Allocate memory for the concatenated path*/
 		required_length = strlen(tmp->path) + strlen("/") + strlen(command) + 1;
 		string = (char *)malloc(required_length);
 
 		if (string == NULL)
 			return (NULL);
 
+		/* Construct the full path*/
 		strcpy(string, tmp->path);
 		strcat(string, "/");
 		strcat(string, command);
 
+		/* Check if the file exists at this path*/
 		if (stat(string, &st) == 0)
 		{
 			return (string);
@@ -130,7 +136,7 @@ void free_list(list_path *head)
 {
 	list_path *next_node;
 
-	while (head)
+	while (head) /* Traverse the list and free each node */
 	{
 		next_node = head->next;
 		free(head->path);
