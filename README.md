@@ -12,21 +12,21 @@ It's a command-line interface program that provides users with a way to interact
 List of files 
 
 - **man_1_simple_shell**
-	Manual page for the project
+ - Manual page for the project
 - **AUTHORS**
-	List of contributors to this repository
+ - List of contributors to this repository
 - **shell.h**
-	Header file
+ - Header file
 - **very_simple_shell.c**
-	Main function
+ - Main function
 - **print_env.c**
-	Prints the environment
+ - Prints the environment
 - **exit.c**
-	Handles the exit command
+ - Handles the exit command
 - **_getenv.c**
-	Return the value of a global variable
+ - Return the value of a global variable
 - **path.c**
-	Creates linked list of PATH
+ - Creates linked list of PATH
 
 ## List of allowed functions and system calls for this project
 
