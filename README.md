@@ -91,6 +91,8 @@ exit
 
 > or type CTRL + D.
 
+## Example of usage
+
 ## Bugs
 
 No known bugs.
