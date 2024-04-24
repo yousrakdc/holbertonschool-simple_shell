@@ -65,14 +65,32 @@ List of files
 
 You can try to use our code by following these simple steps:
 
-> First, you need to clone our repository using this command :
+> First, you need to clone our repository using this command:
 ````
 git clone https://github.com/yousrakdc/holbertonschool-simple_shell.git
-
 `````
 
+> Then, you need to change your directory:
+`````
+cd holbertonschool-simple_shell
+`````
 
+> Compile the C file:
+`````
+gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
+``````
 
+> Run the shell:
+``````
+./hsh
+``````
+
+> To exit, you can type the command "exit"
+`````
+exit
+``````
+
+> or type CTRL + D:
 
 
 ## Authors
