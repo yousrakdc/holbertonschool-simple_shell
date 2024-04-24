@@ -65,6 +65,14 @@ List of files
 
 You can try to use our code by following these simple steps:
 
+> First, you need to clone our repository using this command :
+````
+git clone https://github.com/yousrakdc/holbertonschool-simple_shell.git
+
+`````
+
+
+
 
 
 ## Authors
