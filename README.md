@@ -1,3 +1,5 @@
+add picture
+
 # Simple Shell Project
 
 This is our end-of-trimester project, part of our Holberton School formation.
