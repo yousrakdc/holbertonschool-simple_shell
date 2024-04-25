@@ -23,8 +23,6 @@ void exit_program(char *command, list_path *head)
 		/*Free the linked list of paths using the free_list function*/
 		free_list(head);
 
-	printf("exit\n");
-
 	/* Exit the program with a success status */
-	exit(EXIT_SUCCESS);
+	exit(0);
 }
