@@ -115,7 +115,6 @@ int execute_it(char *command, list_path *head)
 	pid_t pid;
 	char **argv;
 	int freeArg0 = 0;
-	int use_fork = 0;
 
 	argv = parse_command(command);
 
@@ -125,18 +124,15 @@ int execute_it(char *command, list_path *head)
 		freeArg0 = 1;
 	}
 	
-	if (use_fork)
-		pid = fork();
+	pid = fork();
 
-	if (pid == 0 || !use_fork)
+	if (pid == 0)
 	{
 		if (execv(argv[0], argv) == -1)
 		{
 			perror("Error");
 			exit(EXIT_FAILURE);
 		}
-		if (!use_fork)
-			return (0);
 	}
 	else if (pid == -1)
 	{
