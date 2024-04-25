@@ -11,20 +11,19 @@ void free_list(list_path *head);
 void exit_program(char *command, list_path *head)
 {
 	/* Clean up the command string if it is not NULL */
-	if (command != NULL)
+	if (command)
 	{
 		free(command);
 		command = NULL; /* Set command to NULL to prevent dangling pointer issues */
 	}
 
 	/* Clean up the linked list if it is not NULL */
-	if (head != NULL)
+	if (head)
 	{
 		/*Free the linked list of paths using the free_list function*/
 		free_list(head);
-		head = NULL; /* Set head to NULL to prevent dangling pointer issues */
 	}
 
 	/* Exit the program with a success status */
-	exit(EXIT_FAILURE);
+	exit(0);
 }
