@@ -19,10 +19,9 @@ void exit_program(char *command, list_path *head)
 
 	/* Clean up the linked list if it is not NULL */
 	if (head)
-	{
+
 		/*Free the linked list of paths using the free_list function*/
 		free_list(head);
-	}
 
 	printf("exit\n");
 
