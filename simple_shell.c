@@ -117,7 +117,6 @@ int execute_it(char *command, list_path *head)
 	char **argv;
 	int freeArg0 = 0;
 	int wstatus;
-	struct stat st;
 
 	argv = parse_command(command);
 
@@ -127,8 +126,6 @@ int execute_it(char *command, list_path *head)
 		freeArg0 = 1;
 	}
 
-	if (stat(argv[0], &st) == 0)
-	{
 		pid = fork();
 
 		if (pid == 0)
@@ -154,7 +151,6 @@ int execute_it(char *command, list_path *head)
 			waitpid(pid, &wstatus, 0);
 			return (WEXITSTATUS(wstatus));
 		}
-	}
 
 	return (127);
 }
