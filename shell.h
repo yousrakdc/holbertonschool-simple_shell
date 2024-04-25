@@ -47,6 +47,6 @@ char *_getenv(const char *name);
 void print_env(char **environ);
 
 /* Prototype for exit */
-void exit_program(char *command, list_path *head);
+void exit_program(char *command, list_path *head, int exit_status);
 
 #endif

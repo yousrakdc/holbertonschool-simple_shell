@@ -8,8 +8,9 @@ void free_list(list_path *head);
  * @head: Pointer to the head of the linked list of paths. Will be freed.
  */
 
-void exit_program(char *command, list_path *head)
+void exit_program(char *command, list_path *head, int exit_status)
 {
+
 	/* Clean up the command string if it is not NULL */
 	if (command)
 	{
@@ -23,6 +24,6 @@ void exit_program(char *command, list_path *head)
 		/*Free the linked list of paths using the free_list function*/
 		free_list(head);
 
-	/* Exit the program with a success status */
-	exit(0);
+	/* Exit the program with the specified exit status */
+	exit(exit_status);
 }
