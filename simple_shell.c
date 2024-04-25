@@ -13,35 +13,35 @@ int main(void)
 	list_path *head = NULL;
 	char *value = NULL;
 
-		value = _getenv("PATH");
+	value = _getenv("PATH");
 
 	/* If the PATH variable is found, create a linked list of paths. */
-		if (value)
+	if (value)
+	{
+		head = _path(value);
+	}
+
+	while (1)
+	{
+		command = get_command();
+		if (!command)
+			break; /*if ctrl + D = NULL -> exit the loop*/
+
+		else if (strcmp(command, "exit") == 0)
+			exit_program(command, head);
+
+		else if (strcmp(command, "env") == 0)
 		{
-			head = _path(value);
+			print_env(environ);
+			free(command);
 		}
 
-		while (1)
+		else
 		{
-			command = get_command();
-			if (!command)
-				break; /*if ctrl + D = NULL -> exit the loop*/
-
-			else if (strcmp(command, "exit") == 0)
-				exit_program(command, head);
-
-			else if (strcmp(command, "env") == 0)
-			{
-				print_env(environ);
-				free(command);
-			}
-
-			else
-			{
-				execute_it(command, head);
-				free(command);
-			}
+			execute_it(command, head);
+			free(command);
 		}
+	}
 
 	free_list(head);
 	return (0);
@@ -81,7 +81,7 @@ char *get_command()
  * parse_command - define if command is a path or not
  * @command: the command to execute
  * Return: Argv aka the command to execute
-*/
+ */
 
 char **parse_command(char *command)
 {
@@ -115,7 +115,6 @@ int execute_it(char *command, list_path *head)
 	pid_t pid;
 	char **argv;
 	int freeArg0 = 0;
-
 	argv = parse_command(command);
 
 	if (argv[0][0] != '/' && argv[0][0] != '.')
@@ -123,9 +122,15 @@ int execute_it(char *command, list_path *head)
 		argv[0] = which_path(argv[0], head);
 		freeArg0 = 1;
 	}
-	
+	if (access(argv[0], F_OK) != 0 || access(argv[0], X_OK) != 0)
+	{
+		perror("Error");
+		if (freeArg0 == 1)
+			free(argv[0]);
+		free(argv);
+		return (-1);
+	}
 	pid = fork();
-
 	if (pid == 0)
 	{
 		if (execv(argv[0], argv) == -1)
@@ -149,6 +154,5 @@ int execute_it(char *command, list_path *head)
 		free(argv);
 		waitpid(pid, NULL, 0);
 	}
-
 	return (0);
 }
