@@ -10,8 +10,6 @@ void free_list(list_path *head);
 
 void exit_program(char *command, list_path *head)
 {
-	int exit_status = system
-
 	/* Clean up the command string if it is not NULL */
 	if (command)
 	{
@@ -26,5 +24,5 @@ void exit_program(char *command, list_path *head)
 		free_list(head);
 
 	/* Exit the program with the specified exit status */
-	exit(exit_status);
+	exit(0);
 }
