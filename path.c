@@ -135,10 +135,12 @@ void free_list(list_path *head)
 {
 	list_path *next_node;
 
-	while (head) /* Traverse the list and free each node */
+	while (head != NULL) /* Traverse the list and free each node */
 	{
 		next_node = head->next;
-		free(head->path);
+
+		if (head->path != NULL)
+			free(head->path);
 		free(head);
 		head = next_node;
 	}
