@@ -12,6 +12,7 @@ int main(void)
 	char *command;
 	list_path *head = NULL;
 	char *value = NULL;
+	int return_value = 0;
 
 	value = _getenv("PATH");
 
@@ -28,7 +29,7 @@ int main(void)
 			break; /*if ctrl + D = NULL -> exit the loop*/
 
 		else if (strcmp(command, "exit") == 0)
-			exit_program(command, head);
+			exit_program(command, head, return_value);
 
 		else if (strcmp(command, "env") == 0)
 		{
@@ -38,7 +39,7 @@ int main(void)
 
 		else
 		{
-			execute_it(command, head);
+			return_value = execute_it(command, head);
 			free(command);
 		}
 	}
@@ -115,6 +116,7 @@ int execute_it(char *command, list_path *head)
 	pid_t pid;
 	char **argv;
 	int freeArg0 = 0;
+	int wstatus;
 
 	argv = parse_command(command);
 
@@ -147,7 +149,8 @@ int execute_it(char *command, list_path *head)
 		if (freeArg0 == 1)
 			free(argv[0]);
 		free(argv);
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &wstatus, 0);
+		return (WEXITSTATUS(wstatus));
 	}
-	return (0);
+	return (EXIT_FAILURE);
 }
