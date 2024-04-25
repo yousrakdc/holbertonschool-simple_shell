@@ -16,7 +16,7 @@ extern char **environ;
 /* Path handling */
 
 /**
- * Struct list_path - inked list of path directories
+ * Struct list_path - linked list of path directories
  * @path: path directory
  * @next: pointer to next node
  */
@@ -47,6 +47,6 @@ char *_getenv(const char *name);
 void print_env(char **environ);
 
 /* Prototype for exit */
-void exit_program(char *command, list_path *head, int exit_status);
+void exit_program(char *command, list_path *head);
 
 #endif
