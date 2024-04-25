@@ -115,6 +115,7 @@ int execute_it(char *command, list_path *head)
 	pid_t pid;
 	char **argv;
 	int freeArg0 = 0;
+
 	argv = parse_command(command);
 
 	if (argv[0][0] != '/' && argv[0][0] != '.')
@@ -122,15 +123,9 @@ int execute_it(char *command, list_path *head)
 		argv[0] = which_path(argv[0], head);
 		freeArg0 = 1;
 	}
-	if (access(argv[0], F_OK) != 0 || access(argv[0], X_OK) != 0)
-	{
-		perror("Error");
-		if (freeArg0 == 1)
-			free(argv[0]);
-		free(argv);
-		return (-1);
-	}
+
 	pid = fork();
+
 	if (pid == 0)
 	{
 		if (execv(argv[0], argv) == -1)
