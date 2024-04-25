@@ -12,7 +12,7 @@ int main(void)
 	char *command;
 	list_path *head = NULL;
 	char *value = NULL;
-	int return_value = 0;
+	int result = 0;
 
 	value = _getenv("PATH");
 
@@ -29,7 +29,7 @@ int main(void)
 			break; /*if ctrl + D = NULL -> exit the loop*/
 
 		else if (strcmp(command, "exit") == 0)
-			exit_program(command, head, return_value);
+			exit_program(command, head, result);
 
 		else if (strcmp(command, "env") == 0)
 		{
@@ -39,7 +39,7 @@ int main(void)
 
 		else
 		{
-			return_value = execute_it(command, head);
+			result = execute_it(command, head);
 			free(command);
 		}
 	}

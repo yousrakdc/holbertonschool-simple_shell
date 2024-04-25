@@ -6,6 +6,7 @@ void free_list(list_path *head);
  * exit_program - built-in to exits the shell
  * @command: Pointer to the command string. Will be freed if not NULL.
  * @head: Pointer to the head of the linked list of paths. Will be freed.
+ * @exit_value: the value to return on exit
  */
 
 void exit_program(char *command, list_path *head, int exit_value)
