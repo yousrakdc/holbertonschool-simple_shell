@@ -141,7 +141,6 @@ int execute_it(char *command, list_path *head)
 		}
 		else if (pid == -1)
 		{
-			printf("Error : fork failure");
 			if (freeArg0 == 1)
 				free(argv[0]);
 			free(argv);
@@ -157,5 +156,5 @@ int execute_it(char *command, list_path *head)
 		}
 	}
 
-	return (0);
+	return (127);
 }
