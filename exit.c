@@ -24,6 +24,9 @@ void exit_program(char *command, list_path *head)
 		free_list(head);
 	}
 
+	/* Print exit */
+	printf("exit");
+
 	/* Exit the program with a success status */
 	exit(0);
 }
