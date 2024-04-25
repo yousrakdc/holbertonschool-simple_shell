@@ -28,5 +28,5 @@ void exit_program(char *command, list_path *head)
 	printf("exit");
 
 	/* Exit the program with a success status */
-	exit(EXIT_FAILURE);
+	exit(EXIT_SUCCESS);
 }
