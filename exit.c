@@ -25,5 +25,5 @@ void exit_program(char *command, list_path *head)
 	}
 
 	/* Exit the program with a success status */
-	exit(EXIT_SUCCESS);
+	exit(0);
 }
