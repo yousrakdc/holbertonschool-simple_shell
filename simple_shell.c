@@ -130,7 +130,7 @@ int execute_it(char *command, list_path *head)
 	{
 		if (execv(argv[0], argv) == -1)
 		{
-			perror("Error");
+			fprintf(stderr, "Error '%s': %s\n", argv[0], strerror(errno));
 			exit(EXIT_FAILURE);
 		}
 	}
