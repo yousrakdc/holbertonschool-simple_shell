@@ -81,7 +81,7 @@ char *get_command()
 /**
  * parse_command - define if command is a path or not
  * @command: the command to execute
- * Return: Argv aka the command to execute
+ * Return: Argv, the command to execute
  */
 
 char **parse_command(char *command)
@@ -117,6 +117,7 @@ int execute_it(char *command, list_path *head)
 	char **argv;
 	int freeArg0 = 0;
 	int wstatus;
+	struct stat st;
 
 	argv = parse_command(command);
 
@@ -126,31 +127,35 @@ int execute_it(char *command, list_path *head)
 		freeArg0 = 1;
 	}
 
-	pid = fork();
-
-	if (pid == 0)
+	if (stat(argv[0], &st) == 0)
 	{
-		if (execve(argv[0], argv, environ) == -1)
+		pid = fork();
+
+		if (pid == 0)
 		{
-			fprintf(stderr, "Error '%s': %s\n", argv[0], strerror(errno));
+			if (execve(argv[0], argv, environ) == -1)
+			{
+				fprintf(stderr, "Error '%s': %s\n", argv[0], strerror(errno));
+				exit(EXIT_FAILURE);
+			}
+		}
+		else if (pid == -1)
+		{
+			printf("Error : fork failure");
+			if (freeArg0 == 1)
+				free(argv[0]);
+			free(argv);
 			exit(EXIT_FAILURE);
 		}
+		else
+		{
+			if (freeArg0 == 1)
+				free(argv[0]);
+			free(argv);
+			waitpid(pid, &wstatus, 0);
+			return (WEXITSTATUS(wstatus));
+		}
 	}
-	else if (pid == -1)
-	{
-		printf("Error : fork failure");
-		if (freeArg0 == 1)
-			free(argv[0]);
-		free(argv);
-		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		if (freeArg0 == 1)
-			free(argv[0]);
-		free(argv);
-		waitpid(pid, &wstatus, 0);
-		return (WEXITSTATUS(wstatus));
-	}
-	return (EXIT_FAILURE);
+
+	return (0);
 }
