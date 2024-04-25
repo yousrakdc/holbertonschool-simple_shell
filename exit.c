@@ -14,6 +14,7 @@ void exit_program(char *command, list_path *head)
 	if (command != NULL)
 	{
 		free(command);
+		command = NULL; /* Set command to NULL to prevent dangling pointer issues */
 	}
 
 	/* Clean up the linked list if it is not NULL */
