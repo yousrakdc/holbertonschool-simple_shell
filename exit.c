@@ -22,6 +22,7 @@ void exit_program(char *command, list_path *head)
 	{
 		/*Free the linked list of paths using the free_list function*/
 		free_list(head);
+		head = NULL; /* Set head to NULL to prevent dangling pointer issues */
 	}
 
 	/* Exit the program with a success status */
