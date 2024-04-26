@@ -8,7 +8,6 @@
 - Files description
 - List of allowed functions and system calls for this project
 - How to use our code
-- Bugs
 - Authors
 
 _______
@@ -29,8 +28,8 @@ _______
 ## Main functionalities
 
 > Displays a priompt "~$" and waits for user input.  
-> The get_command function is responsible for reading the command entered by the user.  
-> The parse_command function is responsible for tokenizing the command line into arguments. 
+> The `get_command` function is responsible for reading the command entered by the user.  
+> The `parse_command` function is responsible for tokenizing the command line into arguments.  
 > Uses the PATH environment variable to resolve the full path of the command.  
 > Executes the command using fork and execv in a child process.  
 > The shell properly handles the end-of-file condition (Ctrl+D), which terminates the shell.  
@@ -125,12 +124,6 @@ exit
 > or type CTRL + D.
 
 _______
-
-## Bugs
-
-No known bugs.
-
-________
 
 ## Authors
 

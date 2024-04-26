@@ -8,9 +8,10 @@ DESCRIPTION
 The simple shell is a simple command-line interface in C language that allows users to execute various commands and interact with the operating system. The program is designed for both non-interactive and interactive use. It allows direct command input or execution of commands from a file.
 
 USAGE
-The simple shell is initiated by executing the compiled executable simple_shell.c. The program reads, interprets, and executes commands given to it in the terminal. 
+The simple shell is initiated by executing the compiled executable simple_shell.c. The program reads, interprets, and executes commands provided in the terminal.
 
 SHELL GRAMMAR
+Commands are structured as follows:
 [command_name] [argument...]
 
 RETURN VALUE
@@ -25,9 +26,16 @@ Cause the shell to print his environment.
 exit
 Cause the shell to exit with the exit status of the last command executed.
 
+LIMITATIONS
+
+simple_shell does not support all commands and features of a standard UNIX shell.
+The cd command is not supported.
+Special characters such as ", ', `, , *, &, and # are not handled.
+Cursor movement commands are not supported.
 
 BUGS
-This function does not support all the commands provided by the standard simple shell.It does not handle the cd commands. It does not handle special characters like ", ', `, \, *, & or #. It is not able to move the cursor.
+This function does not support all the commands provided by the standard simple shell. It does not handle the cd commands.
+Error handling may not be comprehensive.
 
 AUTHORS
-This simple shell was produced by Samantha Jouini and Yousra Kerduchi for Holberton School Toulouse in april 2024.
+This simple shell was produced by Samantha Jouini and Yousra Kerdouchi for Holberton School Toulouse in April 2024.
