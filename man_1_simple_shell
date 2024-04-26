@@ -27,7 +27,6 @@ exit
 Cause the shell to exit with the exit status of the last command executed.
 
 LIMITATIONS
-
 simple_shell does not support all commands and features of a standard UNIX shell.
 The cd command is not supported.
 Special characters such as ", ', `, , *, &, and # are not handled.
