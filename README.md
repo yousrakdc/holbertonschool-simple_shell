@@ -2,9 +2,9 @@
 
 ## Table of content
 
-- Simple Shell Porject
-- what's a Shell?
-- Main functionnaltiies
+- Simple Shell Project
+- What's a Shell?
+- Main functionaltiies
 - Files description
 - List of allowed functions and system calls for this project
 - How to use our code
@@ -26,7 +26,7 @@ It's a command-line interface program that provides users with a way to interact
 
 _______
 
-## Main functionnalities
+## Main functionalities
 
 > Displays a priompt "~$" and waits for user input.  
 > The get_command function is responsible for reading the command entered by the user.  
