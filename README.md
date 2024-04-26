@@ -1,4 +1,4 @@
-add picture!
+![simple_shell (1)](https://github.com/yousrakdc/holbertonschool-simple_shell/assets/142456388/c3d4fa00-23dc-41eb-87b1-b54cecb9a75e)
 
 ## Table of content
 
