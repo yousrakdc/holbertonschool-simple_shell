@@ -1,5 +1,16 @@
 add picture!
 
+## Table of content
+
+- Simple Shell Porject
+- what's a Shell?
+- Main functionnaltiies
+- Files description
+- List of allowed functions and system calls for this project
+- How to use our code
+- Bugs
+- Authors
+
 # Simple Shell Project
 
 This is our end-of-trimester project, part of our Holberton School formation.
@@ -11,12 +22,12 @@ It's a command-line interface program that provides users with a way to interact
 
 ## Main functionnalities
 
-Displays a priompt "~$" and waits for user input.
-The get_command function is responsible for reading the command entered by the user.
-The parse_command function is responsible for tokenizing the command line into arguments.
-Uses the PATH environment variable to resolve the full path of the command.
-Executes the command using fork and execv in a child process.
-The shell properly handles the end-of-file condition (Ctrl+D), which terminates the shell.
+> Displays a priompt "~$" and waits for user input.
+> The get_command function is responsible for reading the command entered by the user.
+> The parse_command function is responsible for tokenizing the command line into arguments.
+> Uses the PATH environment variable to resolve the full path of the command.
+> Executes the command using fork and execv in a child process.
+> The shell properly handles the end-of-file condition (Ctrl+D), which terminates the shell.
 
 ## Files description
 
