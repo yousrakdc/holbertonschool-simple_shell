@@ -11,23 +11,30 @@ add picture!
 - Bugs
 - Authors
 
+_______
+
 # Simple Shell Project
 
 This is our end-of-trimester project, part of our Holberton School formation.
 This project was completed using C language Shell Betty linter.
 
+_______
+
 ## What's a Shell?
 
 It's a command-line interface program that provides users with a way to interact with the operating system by accepting and executing commands. It acts as an intermediary between the user and the kernel of the operating system, facilitating tasks such as launching programs, managing files, and controlling system resources.
 
+_______
+
 ## Main functionnalities
 
-> Displays a priompt "~$" and waits for user input.
-> The get_command function is responsible for reading the command entered by the user.
-> The parse_command function is responsible for tokenizing the command line into arguments.
-> Uses the PATH environment variable to resolve the full path of the command.
-> Executes the command using fork and execv in a child process.
-> The shell properly handles the end-of-file condition (Ctrl+D), which terminates the shell.
+> Displays a priompt "~$" and waits for user input.  
+> The get_command function is responsible for reading the command entered by the user.  
+> The parse_command function is responsible for tokenizing the command line into arguments. 
+> Uses the PATH environment variable to resolve the full path of the command.  
+> Executes the command using fork and execv in a child process.  
+> The shell properly handles the end-of-file condition (Ctrl+D), which terminates the shell.  
+______
 
 ## Files description
 
@@ -41,6 +48,8 @@ List of files
 - `print_env.c`: Prints the environment
 - `_getenv.c`: Return the value of a global variable
 - `exit.c`: Handles the exit command
+
+______
 
 ## List of allowed functions and system calls for this project
 
@@ -82,6 +91,8 @@ List of files
 - wait4 (man 2 wait4)
 - write (man 2 write)
 
+______
+
 ## How to use our code
 
 You can try to use our code by following these simple steps:
@@ -113,9 +124,13 @@ exit
 
 > or type CTRL + D.
 
+_______
+
 ## Bugs
 
 No known bugs.
+
+________
 
 ## Authors
 
